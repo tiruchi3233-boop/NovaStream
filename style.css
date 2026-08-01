@@ -156,3 +156,27 @@ nav a:hover {
     font-size: 1.1rem;
     color: #fff;
 }
+/* --- Movies & Books Card Fixing --- */
+.carousel {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding: 10px 15px !important;
+    scrollbar-width: none; /* Firefox में स्क्रॉलबार छिपाने के लिए */
+}
+
+/* Chrome/Safari में स्क्रॉलबार छिपाने के लिए */
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+/* कार्ड का साइज छोटा करने के लिए */
+.carousel img, 
+.movie-card img, 
+.book-card img {
+    width: 120px !important;
+    height: 170px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+}
