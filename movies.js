@@ -32,8 +32,6 @@ async function loadMovies() {
                     <div class="card-title" style="color: #ffffff; font-size: 12px; font-weight: 500; margin-top: 6px; width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left;">${title}</div>
                 </a>
             `;
-
-                </a>`;
         });
     } catch (err) {
         container.innerHTML = '<p>Movies लोड नहीं हो सकीं</p>';
