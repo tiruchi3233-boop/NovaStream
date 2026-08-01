@@ -180,3 +180,42 @@ nav a:hover {
     border-radius: 8px !important;
     flex-shrink: 0 !important;
 }
+/* --- Horizontal Carousel & Image Resize Fix --- */
+
+/* कैरोसेल को एक लाइन में सेट करने के लिए */
+#movies-container, #books-container, .carousel {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding: 10px 0 !important;
+    width: 100% !important;
+    scrollbar-width: none;
+}
+
+#movies-container::-webkit-scrollbar, 
+#books-container::-webkit-scrollbar, 
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+/* मूवी/बुक के हर कार्ड को एक लाइन में रखने के लिए */
+#movies-container > div, 
+#books-container > div, 
+.movie-card, 
+.book-card {
+    flex: 0 0 auto !important;
+    width: 120px !important;
+}
+
+/* फोटो का साइज छोटा करने के लिए */
+#movies-container img, 
+#books-container img, 
+.carousel img {
+    width: 120px !important;
+    height: 170px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    display: block !important;
+}
