@@ -272,3 +272,65 @@ nav a:hover {
     text-overflow: ellipsis !important; /* नाम लंबा हो तो ... दिखेगा */
     text-align: left !important;
 }
+/* --- Final Netflix Badge & Title Styling Fix --- */
+
+/* हर मूवी/बुक कार्ड कंटेनर की पोजिशन फिक्स */
+#movies-container > div, 
+#books-container > div, 
+.movie-card, 
+.book-card {
+    position: relative !important;
+    display: inline-block !important;
+    background-color: #141414 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    padding-bottom: 8px !important;
+}
+
+/* 4K HD टैग को फोटो के ठीक ऊपर कोने में फिक्स करना */
+#movies-container > div span, 
+#books-container > div span,
+.movie-card span, 
+.book-card span {
+    position: absolute !important;
+    top: 6px !important;
+    right: 6px !important;
+    background-color: #e50914 !important; /* Netflix Red */
+    color: #ffffff !important;
+    font-size: 9px !important;
+    font-weight: bold !important;
+    padding: 2px 5px !important;
+    border-radius: 3px !important;
+    z-index: 5 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.6) !important;
+    text-transform: uppercase !important;
+}
+
+/* नीले/काले टेक्स्ट को साफ़ सफ़ेद (White) में बदलना */
+#movies-container > div a,
+#books-container > div a,
+#movies-container > div p, 
+#books-container > div p,
+#movies-container > div h3, 
+#books-container > div h3,
+.movie-card p, 
+.book-card p {
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    display: block !important;
+    margin: 6px 4px 2px 4px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-align: center !important;
+}
+
+/* कार्ड पर होवर/टच इफ़ेक्ट */
+#movies-container > div:hover, 
+#books-container > div:hover {
+    transform: scale(1.05) !important;
+    transition: transform 0.2s ease-in-out !important;
+}
+
