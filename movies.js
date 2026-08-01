@@ -1,3 +1,10 @@
+// ऑटोमैटिक CSS फ्रेश लोड (Dynamic Cache Buster)
+(function() {
+    let link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'style.css?v=' + Date.now();
+    document.head.appendChild(link);
+})();
 const MOVIES_URL = 'https://opensheet.elk.sh/1ygQNR0MZ5mpqvBYeNjXNFu4NPMIbZS330GLDTXgm3D4/Sheet1';
 
 async function loadMovies() {
