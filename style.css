@@ -220,3 +220,55 @@ nav a:hover {
     border-radius: 8px !important;
     display: block !important;
 }
+/* --- Netflix Vibe Styling for Cards --- */
+
+/* मूवी कार्ड कंटेनर */
+.movie-card, .book-card, #movies-container > div, #books-container > div {
+    position: relative !important;
+    background-color: #181818 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    cursor: pointer !important;
+    margin-bottom: 10px !important;
+}
+
+/* कार्ड पर होवर करने पर Netflix ज़ूम प्रभाव */
+.movie-card:hover, .book-card:hover, #movies-container > div:hover, #books-container > div:hover {
+    transform: scale(1.05) !important;
+    z-index: 10 !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* 4K HD बैज को फोटो के ऊपर लाल/गोल्डन लुक देना */
+.movie-card span, .book-card span, 
+#movies-container span, #books-container span,
+.badge, .quality-badge {
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+    background: #e50914 !important; /* Netflix Red */
+    color: #ffffff !important;
+    font-size: 10px !important;
+    font-weight: bold !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+    z-index: 2 !important;
+}
+
+/* मूवी और बुक का नाम स्टाइल (सफ़ेद और साफ़) */
+.movie-card h3, .book-card h3, 
+.movie-card p, .book-card p,
+#movies-container h3, #books-container h3,
+#movies-container p, #books-container p {
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    margin: 6px 8px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important; /* नाम लंबा हो तो ... दिखेगा */
+    text-align: left !important;
+}
