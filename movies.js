@@ -19,15 +19,20 @@ async function loadMovies() {
             const img = item.Image || item.image || item.poster || '';
             const link = item.Link || item.link || item.video || '#';
 
-            container.innerHTML += `
-                <a href="${link}" target="_blank" class="card-link">
-                    <div class="card">
-                        <img src="${img}" alt="${title}">
-                        <div class="card-details">
-                            <span class="badge">4K HD</span>
-                            <div class="card-title">${title}</div>
-                        </div>
+                        container.innerHTML += `
+                <a href="${link}" target="_blank" class="card-link" style="text-decoration: none; color: inherit; display: inline-block; margin-right: 12px; vertical-align: top;">
+                    <div class="card" style="position: relative; width: 130px; border-radius: 6px; overflow: hidden; background: #181818; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                        <img src="${img}" alt="${title}" style="width: 100%; height: 180px; object-fit: cover; display: block;">
+                        
+                        <!-- 4K HD Badge Overlay -->
+                        <span class="badge" style="position: absolute; top: 6px; right: 6px; background-color: #e50914; color: #ffffff; font-size: 9px; font-weight: bold; padding: 2px 5px; border-radius: 3px; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.6); text-transform: uppercase;">4K HD</span>
                     </div>
+                    
+                    <!-- White Title Text Below Image -->
+                    <div class="card-title" style="color: #ffffff; font-size: 12px; font-weight: 500; margin-top: 6px; width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left;">${title}</div>
+                </a>
+            `;
+
                 </a>`;
         });
     } catch (err) {
