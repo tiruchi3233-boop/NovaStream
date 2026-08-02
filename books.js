@@ -1,16 +1,15 @@
 const sheetId = '1KsW_umfHcm31DtoFuTcy5Z5t8Plq-0WhrlqY65cmcyo';
 const url = `https://opensheet.elk.sh/${sheetId}/Books`;
 
+// 1. Google Sheets से बुक्स लोड करना
 fetch(url)
   .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     return response.json();
   })
   .then(data => {
-    console.log("Data received from sheet:", data); // ब्राउज़र कंसोल में चेक करने के लिए
     const container = document.getElementById('books-container');
+    if (!container) return;
     container.innerHTML = '';
 
     data.forEach(book => {
@@ -26,44 +25,84 @@ fetch(url)
       }
     });
   })
-  .catch(error => {
-    console.error('Error fetching books:', error);
-    document.getElementById('books-container').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
-  });
-// --- Live Search Functionality for Books ---
+  .catch(error => console.error('Error fetching books:', error));
+
+
+// 2. Movies और Books दोनों के लिए ड्रॉपडाउन लाइव सर्च
 const searchInput = document.getElementById('searchInput');
+const searchDropdown = document.getElementById('searchDropdown');
 
-if (searchInput) {
+if (searchInput && searchDropdown) {
   searchInput.addEventListener('input', function(e) {
-    const searchTerm = e.target.value.toLowerCase().trim();
-    const bookCards = document.querySelectorAll('#books-container .card'); // आपके कार्ड की क्लास
-    let hasResults = false;
+    const query = e.target.value.toLowerCase().trim();
 
-    bookCards.forEach(card => {
-      const title = card.innerText.toLowerCase();
+    if (query === '') {
+      searchDropdown.style.display = 'none';
+      searchDropdown.innerHTML = '';
+      return;
+    }
+
+    searchDropdown.innerHTML = '';
+    let matchesFound = 0;
+
+    // मूवीज़ और बुक्स दोनों को खोजना
+    const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
+
+    allCards.forEach(card => {
+      const titleText = card.innerText || '';
       
-      if (title.includes(searchTerm)) {
-        card.style.display = 'block';
-        hasResults = true;
-      } else {
-        card.style.display = 'none';
+      if (titleText.toLowerCase().includes(query)) {
+        matchesFound++;
+
+        const img = card.querySelector('img');
+        const imgSrc = img ? img.src : '';
+        const link = card.querySelector('a');
+        const actionUrl = link ? link.href : '#';
+
+        const item = document.createElement('div');
+        item.style.cssText = `
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px;
+          border-bottom: 1px solid #1e293b;
+          cursor: pointer;
+        `;
+        item.onmouseover = () => item.style.backgroundColor = '#1e293b';
+        item.onmouseout = () => item.style.backgroundColor = 'transparent';
+
+        item.innerHTML = `
+          ${imgSrc ? `<img src="${imgSrc}" style="width: 35px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
+          <div style="flex: 1; text-align: left;">
+            <div style="color: #fff; font-size: 13px; font-weight: 500;">${titleText.split('\n')[0]}</div>
+            <span style="color: #38bdf8; font-size: 11px;">Watch / Read Now</span>
+          </div>
+        `;
+
+        item.addEventListener('click', () => {
+          if (actionUrl && actionUrl !== '#') {
+            window.open(actionUrl, '_blank');
+          }
+        });
+
+        searchDropdown.appendChild(item);
       }
     });
 
-    // "Not Found" मैसेज दिखाने के लिए
-    let noResultMsg = document.getElementById('no-books-found');
-    if (!hasResults && searchTerm !== '') {
-      if (!noResultMsg) {
-        noResultMsg = document.createElement('p');
-        noResultMsg.id = 'no-books-found';
-        noResultMsg.style.color = '#94a3b8';
-        noResultMsg.style.padding = '10px';
-        noResultMsg.innerText = 'No matching books found.';
-        document.getElementById('books-container').appendChild(noResultMsg);
-      }
-    } else if (noResultMsg) {
-      noResultMsg.remove();
+    if (matchesFound === 0) {
+      searchDropdown.innerHTML = `
+        <div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 13px;">
+          ❌ No results found for "<b>${e.target.value}</b>"
+        </div>
+      `;
+    }
+
+    searchDropdown.style.display = 'block';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+      searchDropdown.style.display = 'none';
     }
   });
 }
-
