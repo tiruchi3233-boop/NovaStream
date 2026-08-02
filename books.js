@@ -1,35 +1,37 @@
-// OpenSheet API URL for Books (Correct Sheet ID)
-const BOOKS_API_URL = "https://opensheet.elk.sh/1KsW_umfHcm31DtoFuTcy5Z5t8Plq-0WhrlqY65cmcyo/books";
+// Google Sheet ID
+const sheetId = '1KsW_umfHcm31DtoFuTcy5Z5t8Plq-0WhrlqY65cmcyo';
+
+// Direct Google GViz JSON Endpoint
+const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
 
 async function fetchBooks() {
-  const container = document.getElementById("books-container");
-  
-  try {
-    const response = await fetch(BOOKS_API_URL, { cache: "no-store" });
-    
-    // Logic Fix: अगर रिस्पॉन्स सही नहीं है (response.ok === false), तभी एरर कैच में भेजें
-    if (!response.ok) {
-      throw new Error(`HTTP Error! Status: ${response.status}`);
-    }
-    
-    const books = await response.json();
+  const container = document.getElementById('books-container');
 
-    // अगर डाटा खाली आए
-    if (!Array.isArray(books) || books.length === 0) {
+  try {
+    const response = await fetch(url);
+    const textData = await response.text();
+
+    // Clean Google's JSON wrapper
+    const jsonString = textData.substring(47, textData.length - 2);
+    const json = JSON.parse(jsonString);
+    const rows = json.table.rows;
+
+    if (!rows || rows.length === 0) {
       if (container) container.innerHTML = "<p>No books found.</p>";
       return;
     }
-    
-    // डाटा को सफलतापूर्वक HTML में रेंडर करें
+
     if (container) {
-      container.innerHTML = books.map(book => {
-        let coverImg = book.cover || book.Image || 'https://via.placeholder.com/150';
-        let readLink = book.read_url || book.link || '#';
+      container.innerHTML = rows.map(row => {
+        // Col A (0) = Title, Col B (1) = Image Link, Col C (2) = Read Link
+        const title = row.c && row.c[0] ? row.c[0].v : 'Untitled';
+        const coverImg = row.c && row.c[1] ? row.c[1].v : 'https://via.placeholder.com/150';
+        const readLink = row.c && row.c[2] ? row.c[2].v : '#';
 
         return `
           <div class="book-card">
-            <img src="${coverImg}" alt="${book.title || 'Book'}">
-            <h3>${book.title || 'Untitled'}</h3>
+            <img src="${coverImg}" alt="${title}">
+            <h3>${title}</h3>
             <a href="${readLink}" target="_blank" rel="noopener noreferrer">Read Now</a>
           </div>
         `;
@@ -44,4 +46,5 @@ async function fetchBooks() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", fetchBooks);
+document.addEventListener('DOMContentLoaded', fetchBooks);
+
