@@ -1,5 +1,4 @@
 const sheetId = '1KsW_umfHcm31DtoFuTcy5Z5t8Plq-0WhrlqY65cmcyo';
-// OpenSheet API (जो Google Sheet को डायरेक्ट साफ़ JSON में बदलती है)
 const url = `https://opensheet.elk.sh/${sheetId}/1`;
 
 async function fetchBooks() {
@@ -12,17 +11,20 @@ async function fetchBooks() {
     const books = await response.json();
 
     if (!Array.isArray(books) || books.length === 0) {
-      if (container) container.innerHTML = "<p>Sheet खाली है या डाटा नहीं मिला।</p>";
+      if (container) container.innerHTML = "<p>No books found.</p>";
       return;
     }
 
     if (container) {
       container.innerHTML = books.map(book => {
-        // यहाँ आपकी Sheet की Headers के नाम आ जाएँगे
-        // अगर आपकी शीट में Column नाम Title, Image, Link हैं:
-        const title = book.Title || book.title || book.Name || 'Untitled';
-        const coverImg = book.Image || book.image || book.Cover || 'https://via.placeholder.com/150';
-        const readLink = book.Link || book.link || book.URL || '#';
+        const title = book.title || 'Untitled';
+        const coverImg = book.cover || 'https://via.placeholder.com/150';
+        
+        // Link format check
+        let readLink = book.read_url || '#';
+        if (readLink !== '#' && !readLink.startsWith('http')) {
+          readLink = 'https://' + readLink;
+        }
 
         return `
           <div class="book-card">
@@ -35,7 +37,6 @@ async function fetchBooks() {
     }
 
   } catch (error) {
-    // स्क्रीन पर असली एरर दिखेगा
     if (container) {
       container.innerHTML = `<p style="color:red;">Error Details: ${error.message}</p>`;
     }
