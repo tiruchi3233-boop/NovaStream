@@ -481,4 +481,24 @@ footer {
     box-shadow: 0 6px 15px rgba(229, 9, 20, 0.6);
     background: linear-gradient(135deg, #ff0f1a, #e50914);
 }
+/* Card Container CSS */
+.card-container, .movie-card, .book-card {
+  position: relative !important; /* बैज को कार्ड के अंदर ही रखने के लिए */
+  display: inline-block;
+}
+
+/* 4K Badge CSS */
+.badge-4k {
+  position: absolute;
+  top: 10px;           /* ऊपर से दूरी */
+  right: 10px;         /* पोस्टर के अंदर दाएँ कोने में सेट करने के लिए */
+  background: #e50914;  /* रेड कलर */
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 6px;
+  border-radius: 4px;
+  z-index: 10;          /* बैज को इमेज के ऊपर दिखाने के लिए */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
 
