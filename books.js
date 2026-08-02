@@ -1,32 +1,28 @@
-// Google Sheet ID
 const sheetId = '1KsW_umfHcm31DtoFuTcy5Z5t8Plq-0WhrlqY65cmcyo';
-
-// Direct Google GViz JSON Endpoint
-const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json`;
+// OpenSheet API (जो Google Sheet को डायरेक्ट साफ़ JSON में बदलती है)
+const url = `https://opensheet.elk.sh/${sheetId}/1`;
 
 async function fetchBooks() {
   const container = document.getElementById('books-container');
 
   try {
     const response = await fetch(url);
-    const textData = await response.text();
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    
+    const books = await response.json();
 
-    // Clean Google's JSON wrapper
-    const jsonString = textData.substring(47, textData.length - 2);
-    const json = JSON.parse(jsonString);
-    const rows = json.table.rows;
-
-    if (!rows || rows.length === 0) {
-      if (container) container.innerHTML = "<p>No books found.</p>";
+    if (!Array.isArray(books) || books.length === 0) {
+      if (container) container.innerHTML = "<p>Sheet खाली है या डाटा नहीं मिला।</p>";
       return;
     }
 
     if (container) {
-      container.innerHTML = rows.map(row => {
-        // Col A (0) = Title, Col B (1) = Image Link, Col C (2) = Read Link
-        const title = row.c && row.c[0] ? row.c[0].v : 'Untitled';
-        const coverImg = row.c && row.c[1] ? row.c[1].v : 'https://via.placeholder.com/150';
-        const readLink = row.c && row.c[2] ? row.c[2].v : '#';
+      container.innerHTML = books.map(book => {
+        // यहाँ आपकी Sheet की Headers के नाम आ जाएँगे
+        // अगर आपकी शीट में Column नाम Title, Image, Link हैं:
+        const title = book.Title || book.title || book.Name || 'Untitled';
+        const coverImg = book.Image || book.image || book.Cover || 'https://via.placeholder.com/150';
+        const readLink = book.Link || book.link || book.URL || '#';
 
         return `
           <div class="book-card">
@@ -39,12 +35,11 @@ async function fetchBooks() {
     }
 
   } catch (error) {
-    console.error("Error loading books:", error);
+    // स्क्रीन पर असली एरर दिखेगा
     if (container) {
-      container.innerHTML = "<p>Books could not be loaded.</p>";
+      container.innerHTML = `<p style="color:red;">Error Details: ${error.message}</p>`;
     }
   }
 }
 
 document.addEventListener('DOMContentLoaded', fetchBooks);
-
