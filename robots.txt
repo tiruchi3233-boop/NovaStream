@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://novastream-32b23.web.app/sitemap.xml
