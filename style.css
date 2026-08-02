@@ -332,4 +332,87 @@ nav a:hover {
     transform: scale(1.05) !important;
     transition: transform 0.2s ease-in-out !important;
 }
+/* --- Header & Search Bar (Amazon Prime Style) --- */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0f172a;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #00a8e8;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.search-box {
+  position: relative;
+  width: 40%;
+  max-width: 320px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #334155;
+  background-color: #1e293b;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-box input:focus {
+  border-color: #00a8e8;
+  box-shadow: 0 0 8px rgba(0, 168, 232, 0.4);
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
+}
+
+/* --- Footer (Prime Style) --- */
+footer {
+  background-color: #0f172a;
+  padding: 30px 20px;
+  margin-top: 40px;
+  text-align: center;
+  border-top: 1px solid #1e293b;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.footer-links a {
+  color: #79b8f3;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-copy {
+  color: #64748b;
+  font-size: 12px;
+}
 
