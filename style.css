@@ -415,4 +415,20 @@ footer {
   color: #64748b;
   font-size: 12px;
 }
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 300px;
+  max-height: 350px;
+  overflow-y: auto;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  display: none;
+  z-index: 1000;
+  margin-top: 6px;
+  padding: 8px;
+}
 
