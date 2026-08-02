@@ -55,8 +55,9 @@ if (searchInput && searchDropdown) {
     const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
 
     allCards.forEach(card => {
-      const titleText = card.innerText || '';
-      
+      const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
+const titleText = titleEl ? titleEl.innerText : '';
+
       if (titleText.toLowerCase().includes(query)) {
         matchesFound++;
 
@@ -80,7 +81,7 @@ if (searchInput && searchDropdown) {
         item.innerHTML = `
           ${imgSrc ? `<img src="${imgSrc}" style="width: 35px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
           <div style="flex: 1; text-align: left;">
-            <div style="color: #fff; font-size: 13px; font-weight: 500;">${titleText.split('\n')[0]}</div>
+            <div style="color: #fff; font-size: 13px; font-weight: 500;">${titleText}</div>
             <span style="color: #38bdf8; font-size: 11px;">Watch / Read Now</span>
           </div>
         `;
