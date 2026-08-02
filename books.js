@@ -30,4 +30,40 @@ fetch(url)
     console.error('Error fetching books:', error);
     document.getElementById('books-container').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
   });
+// --- Live Search Functionality for Books ---
+const searchInput = document.getElementById('searchInput');
+
+if (searchInput) {
+  searchInput.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    const bookCards = document.querySelectorAll('#books-container .card'); // आपके कार्ड की क्लास
+    let hasResults = false;
+
+    bookCards.forEach(card => {
+      const title = card.innerText.toLowerCase();
+      
+      if (title.includes(searchTerm)) {
+        card.style.display = 'block';
+        hasResults = true;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // "Not Found" मैसेज दिखाने के लिए
+    let noResultMsg = document.getElementById('no-books-found');
+    if (!hasResults && searchTerm !== '') {
+      if (!noResultMsg) {
+        noResultMsg = document.createElement('p');
+        noResultMsg.id = 'no-books-found';
+        noResultMsg.style.color = '#94a3b8';
+        noResultMsg.style.padding = '10px';
+        noResultMsg.innerText = 'No matching books found.';
+        document.getElementById('books-container').appendChild(noResultMsg);
+      }
+    } else if (noResultMsg) {
+      noResultMsg.remove();
+    }
+  });
+}
 
