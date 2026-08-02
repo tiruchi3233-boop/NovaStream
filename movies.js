@@ -14,12 +14,13 @@ async function fetchMovies() {
     
     if (container) {
       container.innerHTML = movies.map(movie => `
-        <div class="movie-card">
-          <img src="${movie.poster}" alt="${movie.title}">
-          <h3>${movie.title}</h3>
-          <p>${movie.description || ''}</p>
-          <a href="${movie.video_url}" target="_blank">Watch Now</a>
-        </div>
+              <div class="movie-card card-container">
+        <span class="badge-4k">4K UHD</span>
+        <img src="${movie.poster}" alt="${movie.title}">
+        <h3 class="movie-title">${movie.title}</h3>
+        <p>${movie.description || ''}</p>
+        <a href="${movie.video_url}" target="_blank" class="watch-now-btn">Watch Now</a>
+      </div>
       `).join('');
     }
   } catch (error) {
