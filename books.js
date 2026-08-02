@@ -15,10 +15,11 @@ fetch(url)
     data.forEach(book => {
       if (book.title) {
         const bookCard = `
-          <div class="book-card" style="min-width: 150px; margin: 10px; text-align: center; color: white;">
+                    <div class="book-card card-container" style="min-width: 150px; margin: 10px; text-align: center; color: white;">
+            <span class="badge-4k">4K UHD</span>
             <img src="${book.cover}" alt="${book.title}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 6px;">
-            <h4 style="margin: 8px 0; font-size: 14px;">${book.title}</h4>
-            <a href="${book.read_url}" target="_blank" style="color: #00d2ff; text-decoration: none; font-size: 12px;">Read PDF</a>
+            <h4 class="book-title" style="margin: 8px 0; font-size: 14px;">${book.title}</h4>
+            <a href="${book.read_url}" target="_blank" class="watch-now-btn">Read PDF</a>
           </div>
         `;
         container.innerHTML += bookCard;
