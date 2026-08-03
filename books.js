@@ -23,7 +23,16 @@ fetch(url)
             </div>
 
             <h4 class="book-title" style="margin: 8px 0; font-size: 14px;">${book.title}</h4>
-            <a href="${book.read_url}" target="_blank" class="watch-now-btn">Read PDF</a>
+            <!-- 1. ऑनलाइन पढ़ने के लिए पॉप-अप बटन -->
+<button onclick="openPdfModal('${book.read_url}')" class="watch-now-btn" style="margin-right: 5px; cursor: pointer;">
+  📖 Read Online
+</button>
+
+<!-- 2. डायरेक्ट डाउनलोड बटन -->
+<a href="${book.read_url}" download class="watch-now-btn" style="text-decoration: none;">
+  📥 Download
+</a>
+
           </div>
 
         `;
@@ -112,4 +121,34 @@ const titleText = titleEl ? titleEl.innerText : '';
       searchDropdown.style.display = 'none';
     }
   });
+}// पॉप-अप (Modal) में PDF खोलने और बंद करने का कोड
+function openPdfModal(url) {
+  let modal = document.getElementById('pdf-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'pdf-modal';
+    modal.style.cssText = `
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: center;
+      align-items: center; z-index: 9999; padding: 10px; box-sizing: border-box;
+    `;
+    modal.innerHTML = `
+      <div style="position: relative; width: 100%; max-width: 800px; height: 90vh; background: #1a1a1a; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <button onclick="closePdfModal()" style="position: absolute; top: 10px; right: 15px; background: #ff4757; color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; z-index: 10000;">✕ Close</button>
+        <iframe id="pdf-frame" src="" width="100%" height="100%" style="border: none; margin-top: 40px;"></iframe>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+  document.getElementById('pdf-frame').src = url;
+  modal.style.display = 'flex';
 }
+
+function closePdfModal() {
+  const modal = document.getElementById('pdf-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.getElementById('pdf-frame').src = '';
+  }
+}
+
