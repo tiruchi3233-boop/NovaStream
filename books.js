@@ -42,84 +42,64 @@ fetch(url)
   })
   .catch(error => console.error('Error fetching books:', error));
 
-// 2. Movies और Books दोनों के लिए ड्रॉपडाउन लाइव सर्च
+// 2. Expandable Search Logic
+const searchWrapper = document.querySelector('.search-wrapper');
+const searchTriggerBtn = document.getElementById('searchTriggerBtn');
+const searchContainer = document.getElementById('searchContainer');
 const searchInput = document.getElementById('searchInput');
-const searchDropdown = document.getElementById('searchDropdown');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
 
-if (searchInput && searchDropdown) {
-  searchInput.addEventListener('input', function(e) {
-    const query = e.target.value.toLowerCase().trim();
-
-    if (query === '') {
-      searchDropdown.style.display = 'none';
-      searchDropdown.innerHTML = '';
-      return;
-    }
-
-    searchDropdown.innerHTML = '';
-    let matchesFound = 0;
-
-    // मूवीज़ और बुक्स दोनों को खोजना
-    const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
-
-    allCards.forEach(card => {
-      const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
-const titleText = titleEl ? titleEl.innerText : '';
-
-      if (titleText.toLowerCase().includes(query)) {
-        matchesFound++;
-
-        const img = card.querySelector('img');
-        const imgSrc = img ? img.src : '';
-        const link = card.querySelector('a');
-        const actionUrl = link ? link.href : '#';
-
-        const item = document.createElement('div');
-        item.style.cssText = `
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 8px;
-          border-bottom: 1px solid #1e293b;
-          cursor: pointer;
-        `;
-        item.onmouseover = () => item.style.backgroundColor = '#1e293b';
-        item.onmouseout = () => item.style.backgroundColor = 'transparent';
-
-        item.innerHTML = `
-          ${imgSrc ? `<img src="${imgSrc}" style="width: 35px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
-          <div style="flex: 1; text-align: left;">
-            <div style="color: #fff; font-size: 13px; font-weight: 500;">${titleText}</div>
-            <span style="color: #38bdf8; font-size: 11px;">Watch / Read Now</span>
-          </div>
-        `;
-
-        item.addEventListener('click', () => {
-          if (actionUrl && actionUrl !== '#') {
-            window.open(actionUrl, '_blank');
-          }
-        });
-
-        searchDropdown.appendChild(item);
-      }
+if (searchTriggerBtn && searchContainer && searchInput) {
+    // 🔍 Icon क्लिक करने पर Box खुलेगा
+    searchTriggerBtn.addEventListener('click', () => {
+        if (searchWrapper) searchWrapper.classList.add('is-open');
+        searchContainer.classList.add('active');
+        searchInput.focus();
     });
 
-    if (matchesFound === 0) {
-      searchDropdown.innerHTML = `
-        <div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 13px;">
-          ❌ No results found for "<b>${e.target.value}</b>"
-        </div>
-      `;
+    // टाइप करने पर कार्ड्स फ़िल्टर होंगे और Clear बटन दिखेगा
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        if (clearSearchBtn) {
+            clearSearchBtn.style.display = query.length > 0 ? 'block' : 'none';
+        }
+
+        // Movies और Books दोनों के कार्ड्स को फ़िल्टर करना
+        const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
+        allCards.forEach(card => {
+            const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
+            const titleText = titleEl ? titleEl.innerText.toLowerCase() : '';
+
+            if (titleText.includes(query)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    // Clear (✖️) बटन पर क्लिक करने पर सर्च रीसेट होगा
+    if (clearSearchBtn) {
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.style.display = 'none';
+            searchInput.focus();
+
+            const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
+            allCards.forEach(card => card.style.display = '');
+        });
     }
 
-    searchDropdown.style.display = 'block';
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-      searchDropdown.style.display = 'none';
-    }
-  });
+    // बाहर क्लिक करने पर सर्च बार बंद हो जाएगा (अगर खाली है)
+    document.addEventListener('click', (e) => {
+        if (searchWrapper && !searchWrapper.contains(e.target) && searchInput.value === '') {
+            searchContainer.classList.remove('active');
+            searchWrapper.classList.remove('is-open');
+            if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+        }
+    });
+}
 }// पॉप-अप (Modal) में PDF खोलने और बंद करने का कोड
 function openPdfModal(url) {
   let modal = document.getElementById('pdf-modal');
