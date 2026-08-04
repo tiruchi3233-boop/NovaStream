@@ -174,3 +174,56 @@ if (searchInput && searchDropdown) {
     }
   });
 }
+// ==========================================
+// Expandable Search Bar Logic
+// ==========================================
+const searchTriggerBtn = document.getElementById('searchTriggerBtn');
+const searchContainer = document.getElementById('searchContainer');
+const searchInputEl = document.getElementById('searchInput'); 
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+const searchDropdownEl = document.getElementById('searchDropdown');
+
+// 1. आइकॉन पर क्लिक करने पर सर्च बॉक्स खोलना
+if (searchTriggerBtn && searchContainer) {
+  searchTriggerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    searchContainer.classList.add('active');
+    searchInputEl.focus(); 
+    searchTriggerBtn.style.display = 'none'; 
+  });
+}
+
+// 2. जब कुछ टाइप हो, तो Clear (X) बटन दिखाना
+if (searchInputEl && clearSearchBtn) {
+  searchInputEl.addEventListener('input', () => {
+    if (searchInputEl.value.length > 0) {
+      clearSearchBtn.style.display = 'block';
+    } else {
+      clearSearchBtn.style.display = 'none';
+    }
+  });
+}
+
+// 3. Clear (X) बटन पर क्लिक करने पर टेक्स्ट डिलीट करना
+if (clearSearchBtn) {
+  clearSearchBtn.addEventListener('click', () => {
+    searchInputEl.value = ''; 
+    clearSearchBtn.style.display = 'none'; 
+    searchInputEl.focus(); 
+    
+    if (searchDropdownEl) {
+       searchDropdownEl.style.display = 'none';
+       searchDropdownEl.innerHTML = '';
+    }
+  });
+}
+
+// 4. सर्च बॉक्स के बाहर कहीं भी क्लिक करने पर उसे बंद करना
+document.addEventListener('click', (e) => {
+  if (searchContainer && searchTriggerBtn) {
+    if (!searchContainer.contains(e.target) && !searchDropdownEl.contains(e.target)) {
+      searchContainer.classList.remove('active');
+      searchTriggerBtn.style.display = 'block'; 
+    }
+  }
+});
