@@ -501,4 +501,30 @@ footer {
   z-index: 10;          /* बैज को इमेज के ऊपर दिखाने के लिए */
   box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
+/* Search Input Default Style */
+#searchInput {
+  width: 180px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 20px;
+  border: 1px solid #333;
+  background-color: #141414;
+  color: #fff;
+  outline: none;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Hover Effect */
+#searchInput:hover {
+  border-color: #555;
+  background-color: #1a1a1a;
+}
+
+/* Click/Focus Effect - Expands & Glows */
+#searchInput:focus {
+  width: 280px; /* क्लिक करने पर चौड़ाई बढ़ेगी */
+  border-color: #e50914; /* NovaStream Red */
+  background-color: #000;
+  box-shadow: 0 0 12px rgba(229, 9, 20, 0.6); /* Red Glow */
+}
 
