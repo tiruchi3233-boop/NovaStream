@@ -199,4 +199,3 @@ function closeLegalModal() {
     modal.style.display = 'none';
   }
 }
-
