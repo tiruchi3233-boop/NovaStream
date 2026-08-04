@@ -170,3 +170,11 @@ function closeLegalModal() {
     modal.style.display = 'none';
   }
 }
+// Event Listener for Read Online buttons
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.read-online-btn');
+  if (btn) {
+    const pdfUrl = btn.getAttribute('data-url');
+    openPdfModal(pdfUrl);
+  }
+});
