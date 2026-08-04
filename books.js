@@ -24,10 +24,9 @@ fetch(url)
 
             <h4 class="book-title" style="margin: 8px 0; font-size: 14px;">${book.title}</h4>
             <!-- 1. ऑनलाइन पढ़ने के लिए पॉप-अप बटन -->
-<button onclick="openPdfModal('${book.read_url}')" class="watch-now-btn" style="margin-right: 5px; cursor: pointer;">
+<button class="read-online-btn watch-now-btn" data-url="${book.read_url}" style="margin-right: 5px; cursor: pointer;">
   📖 Read Online
 </button>
-
 <!-- 2. डायरेक्ट डाउनलोड बटन -->
 <a href="${book.read_url}" download class="watch-now-btn" style="text-decoration: none;">
   📥 Download
