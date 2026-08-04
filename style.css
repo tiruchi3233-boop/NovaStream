@@ -610,4 +610,19 @@ footer {
 .search-wrapper.is-open .search-trigger-btn {
   display: none;
 }
+/* 🔍 Clean Search Icon (Background & Shadow Hata Kar) */
+#searchTriggerBtn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 22px;
+    cursor: pointer;
+    color: #b3b3b3;
+    transition: color 0.3s ease;
+    padding: 5px;
+}
+
+#searchTriggerBtn:hover {
+    color: #ffffff;
+}
 
