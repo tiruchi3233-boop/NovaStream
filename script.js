@@ -1,8 +1,48 @@
 import { loadBooks } from './books.js';
-// अगर movies.js भी है तो: import { loadMovies } from './movies.js';
+
+// पेज लोड होते ही बुक्स लोड करें
+document.addEventListener('DOMContentLoaded', () => {
+  loadBooks();
+});
 
 // ==========================================
-// 1. Data Definitions (Legal Notices & Policies)
+// 1. PDF Modal Functions (Global बनाए गए हैं)
+// ==========================================
+window.openPdfModal = function(url) {
+  let modal = document.getElementById('pdf-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'pdf-modal';
+    modal.style.cssText = `
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85); display: flex; justify-content: center;
+      align-items: center; z-index: 9999; padding: 10px; box-sizing: border-box;
+    `;
+    modal.innerHTML = `
+      <div style="position: relative; width: 100%; max-width: 800px; height: 90vh; background: #1a1a1a; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <button onclick="closePdfModal()" style="position: absolute; top: 10px; right: 15px; background: #ff4757; color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; z-index: 10000;">✕ Close</button>
+        <iframe id="pdf-frame" src="" width="100%" height="100%" style="border: none; margin-top: 40px;"></iframe>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+  
+  // Google Docs Viewer का लिंक ताकि मोबाइल में डाउनलोड न हो, सीधे खुले
+  const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url)}`;
+  document.getElementById('pdf-frame').src = embedUrl;
+  modal.style.display = 'flex';
+};
+
+window.closePdfModal = function() {
+  const modal = document.getElementById('pdf-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.getElementById('pdf-frame').src = '';
+  }
+};
+
+// ==========================================
+// 2. Legal Notices & Policies (Global बनाए गए हैं)
 // ==========================================
 const legalData = {
   privacy: {
@@ -35,10 +75,7 @@ const legalData = {
   }
 };
 
-// ==========================================
-// 2. Global Modal Functions
-// ==========================================
-function openLegalModal(type) {
+window.openLegalModal = function(type) {
   const modal = document.getElementById('legal-modal');
   const title = document.getElementById('legal-title');
   const content = document.getElementById('legal-content');
@@ -48,152 +85,92 @@ function openLegalModal(type) {
     content.innerHTML = legalData[type].content;
     modal.style.display = 'flex';
   }
-}
+};
 
-function closeLegalModal() {
+window.closeLegalModal = function() {
   const modal = document.getElementById('legal-modal');
   if (modal) {
     modal.style.display = 'none';
   }
-}
-
-// HTML onclick इवेंट्स में एक्सेस देने के लिए window ऑब्जेक्ट पर अटैच करें
-window.openLegalModal = openLegalModal;
-window.closeLegalModal = closeLegalModal;
-
-function openPdfModal(url) {
-  let modal = document.getElementById('pdf-modal');
-
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'pdf-modal';
-    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;display:flex;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;';
-    
-    modal.innerHTML = `
-      <div style="position:relative;width:90%;height:90%;max-width:900px;background:#1a1a1a;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.5);">
-        <button id="close-pdf-btn" style="position:absolute;top:10px;right:15px;z-index:10000;background:#e50914;color:#fff;border:none;padding:8px 14px;font-size:16px;font-weight:bold;cursor:pointer;border-radius:4px;">✕ Close</button>
-        <iframe id="pdf-iframe" style="width:100%;height:100%;border:none;margin-top:40px;" src=""></iframe>
-      </div>
-    `;
-    document.body.appendChild(modal);
-
-    document.getElementById('close-pdf-btn').onclick = function() {
-      modal.style.display = 'none';
-      document.getElementById('pdf-iframe').src = '';
-    };
-  }
-
-  const iframe = document.getElementById('pdf-iframe');
-  iframe.src = url;
-  modal.style.display = 'flex';
-}
+};
 
 // ==========================================
-// 3. Application Initialization & Events
+// 3. Movies और Books दोनों के लिए ड्रॉपडाउन लाइव सर्च
 // ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. डेटा लोड करें
-  loadBooks();
-  // loadMovies();
+const searchInput = document.getElementById('searchInput');
+const searchDropdown = document.getElementById('searchDropdown');
 
-  // 2. Movies और Books दोनों के लिए ड्रॉपडाउन लाइव सर्च
-  const searchInput = document.getElementById('searchInput');
-  const searchDropdown = document.getElementById('searchDropdown');
+if (searchInput && searchDropdown) {
+  searchInput.addEventListener('input', function(e) {
+    const query = e.target.value.toLowerCase().trim();
 
-  if (searchInput && searchDropdown) {
-    searchInput.addEventListener('input', function(e) {
-      const query = e.target.value.toLowerCase().trim();
-
-      if (query === '') {
-        searchDropdown.style.display = 'none';
-        searchDropdown.innerHTML = '';
-        return;
-      }
-
+    if (query === '') {
+      searchDropdown.style.display = 'none';
       searchDropdown.innerHTML = '';
-      let matchesFound = 0;
+      return;
+    }
 
-      // मूवीज़ और बुक्स दोनों के कार्ड्स खोजना
-      const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
+    searchDropdown.innerHTML = '';
+    let matchesFound = 0;
 
-      allCards.forEach(card => {
-        const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
-        const titleText = titleEl ? titleEl.innerText : '';
+    const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
 
-        if (titleText.toLowerCase().includes(query)) {
-          matchesFound++;
+    allCards.forEach(card => {
+      const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
+      const titleText = titleEl ? titleEl.innerText : '';
 
-          const img = card.querySelector('img');
-          const imgSrc = img ? img.src : '';
-          
-          // रीड या डाउनलोड लिंक निकालना
-          const link = card.querySelector('a');
-          const actionUrl = link ? link.href : '#';
+      if (titleText.toLowerCase().includes(query)) {
+        matchesFound++;
 
-          const item = document.createElement('div');
-          item.style.cssText = `
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px;
-            border-bottom: 1px solid #1e293b;
-            cursor: pointer;
-          `;
-          item.onmouseover = () => item.style.backgroundColor = '#1e293b';
-          item.onmouseout = () => item.style.backgroundColor = 'transparent';
+        const img = card.querySelector('img');
+        const imgSrc = img ? img.src : '';
+        const link = card.querySelector('a');
+        const actionUrl = link ? link.href : '#';
 
-          item.innerHTML = `
-            ${imgSrc ? `<img src="${imgSrc}" style="width: 35px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
-            <div style="flex: 1; text-align: left;">
-              <div style="color: #fff; font-size: 13px; font-weight: 500;">${titleText}</div>
-              <span style="color: #38bdf8; font-size: 11px;">Watch / Read Now</span>
-            </div>
-          `;
+        const item = document.createElement('div');
+        item.style.cssText = `
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 8px;
+          border-bottom: 1px solid #1e293b;
+          cursor: pointer;
+        `;
+        item.onmouseover = () => item.style.backgroundColor = '#1e293b';
+        item.onmouseout = () => item.style.backgroundColor = 'transparent';
 
-          item.addEventListener('click', () => {
-            if (actionUrl && actionUrl !== '#') {
-              window.open(actionUrl, '_blank');
-            }
-          });
-
-          searchDropdown.appendChild(item);
-        }
-      });
-
-      if (matchesFound === 0) {
-        searchDropdown.innerHTML = `
-          <div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 13px;">
-            ❌ No results found for "<b>${e.target.value}</b>"
+        item.innerHTML = `
+          ${imgSrc ? `<img src="${imgSrc}" style="width: 35px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
+          <div style="flex: 1; text-align: left;">
+            <div style="color: #fff; font-size: 13px; font-weight: 500;">${titleText}</div>
+            <span style="color: #38bdf8; font-size: 11px;">Watch / Read Now</span>
           </div>
         `;
-      }
 
-      searchDropdown.style.display = 'block';
+        item.addEventListener('click', () => {
+          if (actionUrl && actionUrl !== '#') {
+            window.open(actionUrl, '_blank');
+          }
+        });
+
+        searchDropdown.appendChild(item);
+      }
     });
 
-    // बाहर क्लिक करने पर ड्रॉपडाउन बंद करना
-    document.addEventListener('click', (e) => {
-      if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-        searchDropdown.style.display = 'none';
-      }
-    });
-  }
-});
-
-// 4. Global Click Event for Read Online Button
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.read-online-btn');
-  if (btn) {
-    e.preventDefault();
-    const pdfUrl = btn.getAttribute('data-url');
-    console.log("Button Clicked! PDF URL:", pdfUrl);
-
-    if (pdfUrl && pdfUrl !== 'undefined' && pdfUrl.trim() !== '') {
-      const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
-      openPdfModal(embedUrl);
-    } else {
-      alert("PDF URL नहीं मिला! Google Sheet में डेटा चेक करें।");
+    if (matchesFound === 0) {
+      searchDropdown.innerHTML = `
+        <div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 13px;">
+          ❌ No results found for "<b>${e.target.value}</b>"
+        </div>
+      `;
     }
-  }
-});
 
+    searchDropdown.style.display = 'block';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+      searchDropdown.style.display = 'none';
+    }
+  });
+}
