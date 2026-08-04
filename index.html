@@ -12,28 +12,35 @@
 
           <header>
     <div class="logo">✨ NovaStream</div>
-    <div class="search-wrapper">
   <!-- 1. Search Icon -->
-  <button id="searchTriggerBtn" class="search-trigger-btn" aria-label="Search">
-    🔍
+<div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
+  
+  <!-- 1. नया सर्च आइकॉन -->
+  <button id="searchTriggerBtn" class="search-trigger-btn" style="background: transparent; border: none; color: white; cursor: pointer; padding: 8px;">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
   </button>
 
-  <!-- 2. Expandable Search Box Container -->
-  <div class="search-container" id="searchContainer">
-    <span class="search-icon-inside">🔍</span>
+  <!-- 2. खुलने वाला सर्च बॉक्स -->
+  <div id="searchContainer" class="search-container">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
     
-    <input 
-      type="text" 
-      id="searchInput" 
-      placeholder="Search movies, books..." 
-      autocomplete="off"
-    />
+    <input type="text" id="searchInput" placeholder="Search movies, books..." autocomplete="off">
     
-    <!-- Clear (✖️) Button -->
-    <span id="clearSearchBtn" class="clear-btn" title="Clear">&times;</span>
+    <!-- Clear (X) बटन -->
+    <span id="clearSearchBtn" class="clear-btn">&times;</span>
   </div>
+
+  <!-- 3. आपका सर्च ड्रॉपडाउन (जिसमें रिज़ल्ट आते हैं) -->
+  <div id="searchDropdown" class="search-dropdown" style="display: none; position: absolute; top: 100%; right: 0; background: #141414; width: 250px; z-index: 1000; border: 1px solid #333;"></div>
 </div>
-  </header>
+  
+</header>
     <!-- Hero Section -->
 <div class="hero">
     <div class="hero-overlay"></div>
