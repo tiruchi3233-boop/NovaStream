@@ -98,30 +98,72 @@ function openPdfModal(url) {
     modal = document.createElement('div');
     modal.id = 'pdf-modal';
     modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 10px; box-sizing: border-box;';
+}
+
+};
+
+function openLegalModal(type) {
+  const modal = document.getElementById('legal-modal');
+  const title = document.getElementById('legal-title');
+  const content = document.getElementById('legal-content');
+
+  if (modal && legalData[type]) {
+    title.innerText = legalData[type].title;
+    content.innerHTML = legalData[type].content;
+    modal.style.display = 'flex';
+  }
+}
+
+function closeLegalModal() {
+  const modal = document.getElementById('legal-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+  // PDF Modal खोलना
+function openPdfModal(url) {
+  let modal = document.getElementById('pdf-modal');
+  let iframe = document.getElementById('pdf-iframe');
+
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'pdf-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;justify-content:center;align-items:center;';
     
     modal.innerHTML = `
-      <div style="position: relative; width: 100%; max-width: 800px; height: 90vh; background: #1a1a1a; border-radius: 8px;">
-        <button onclick="closePdfModal()" style="position: absolute; top: 10px; right: 15px; background: #ff4757; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer;">✕ Close</button>
-        <iframe id="pdf-frame" src="" width="100%" height="100%" style="border: none; margin-top: 40px;"></iframe>
+      <div style="position:relative;width:90%;height:90%;max-width:900px;background:#fff;border-radius:8px;overflow:hidden;">
+        <button id="close-pdf-btn" style="position:absolute;top:10px;right:15px;z-index:10000;background:#e50914;color:#fff;border:none;padding:8px 12px;font-size:16px;cursor:pointer;border-radius:4px;">✕ Close</button>
+        <iframe id="pdf-iframe" style="width:100%;height:100%;border:none;" src=""></iframe>
       </div>
     `;
     document.body.appendChild(modal);
+
+    document.getElementById('close-pdf-btn').onclick = function() {
+      modal.style.display = 'none';
+      document.getElementById('pdf-iframe').src = '';
+    };
   }
 
-  const iframe = modal.querySelector('#pdf-frame');
-  if (iframe) {
-    iframe.src = url;
-  }
-  
+  iframe = document.getElementById('pdf-iframe');
+  iframe.src = url;
   modal.style.display = 'flex';
 }
-function closePdfModal() {
-  const modal = document.getElementById('pdf-modal');
-  if (modal) {
-    modal.style.display = 'none';
-    document.getElementById('pdf-frame').src = '';
+
+// Global Event Listener
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.read-online-btn');
+  if (btn) {
+    e.preventDefault();
+    const pdfUrl = btn.getAttribute('data-url');
+    console.log("Button Clicked! PDF URL:", pdfUrl);
+
+    if (pdfUrl && pdfUrl !== 'undefined') {
+      const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
+      openPdfModal(embedUrl);
+    } else {
+      alert("PDF URL नहीं मिला! Google Sheet में डेटा चेक करें।");
+    }
   }
-}
+});
 // Generic Legal Notices & Policies
 const legalData = {
   privacy: {
@@ -152,33 +194,3 @@ const legalData = {
       <p>We reserve the right to modify services, terms, and features at any time without prior individual notice.</p>
     `
   }
-};
-
-function openLegalModal(type) {
-  const modal = document.getElementById('legal-modal');
-  const title = document.getElementById('legal-title');
-  const content = document.getElementById('legal-content');
-
-  if (modal && legalData[type]) {
-    title.innerText = legalData[type].title;
-    content.innerHTML = legalData[type].content;
-    modal.style.display = 'flex';
-  }
-}
-
-function closeLegalModal() {
-  const modal = document.getElementById('legal-modal');
-  if (modal) {
-    modal.style.display = 'none';
-  }
-}
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.read-online-btn');
-  if (btn) {
-    const pdfUrl = btn.getAttribute('data-url');
-    if (pdfUrl) {
-      const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
-      openPdfModal(embedUrl);
-    }
-  }
-});
