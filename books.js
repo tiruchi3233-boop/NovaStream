@@ -151,4 +151,54 @@ function closePdfModal() {
     document.getElementById('pdf-frame').src = '';
   }
 }
+// Generic Legal Notices & Policies
+const legalData = {
+  privacy: {
+    title: "Privacy Policy",
+    content: `
+      <p>Welcome to our platform. Your privacy is important to us.</p>
+      <h3>1. Information Collection</h3>
+      <p>We do not collect personal identity information from users browsing our public content.</p>
+      <h3>2. Content & Embedded Files</h3>
+      <p>Our platform hosts and embeds downloadable and viewable digital resources (PDFs, media) strictly for educational and streaming purposes.</p>
+      <h3>3. Cookies & Analytics</h3>
+      <p>We may use basic browser storage/cookies to enhance user interface controls and stream delivery performance.</p>
+      <h3>4. Contact Us</h3>
+      <p>If you have any queries regarding this Privacy Policy, please email us directly through the Contact Us link.</p>
+    `
+  },
+  terms: {
+    title: "Terms of Use",
+    content: `
+      <p>By accessing and using this website, you agree to comply with the following terms:</p>
+      <h3>1. Content Usage</h3>
+      <p>All content made available on this website is intended solely for personal, non-commercial media viewing and reading.</p>
+      <h3>2. Copyright & Intellectual Property</h3>
+      <p>We respect intellectual property rights. Books and media served are intended to comply with fair-use guidelines or public domain availability.</p>
+      <h3>3. Disclaimer of Liability</h3>
+      <p>We provide services on an "AS IS" basis. We are not liable for any third-party link redirections or network connectivity issues during downloads/streaming.</p>
+      <h3>4. Platform Updates</h3>
+      <p>We reserve the right to modify services, terms, and features at any time without prior individual notice.</p>
+    `
+  }
+};
+
+function openLegalModal(type) {
+  const modal = document.getElementById('legal-modal');
+  const title = document.getElementById('legal-title');
+  const content = document.getElementById('legal-content');
+
+  if (modal && legalData[type]) {
+    title.innerText = legalData[type].title;
+    content.innerHTML = legalData[type].content;
+    modal.style.display = 'flex';
+  }
+}
+
+function closeLegalModal() {
+  const modal = document.getElementById('legal-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
 
