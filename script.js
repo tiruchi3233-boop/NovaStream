@@ -93,26 +93,28 @@ document.addEventListener('DOMContentLoaded', () => {
 }// पॉप-अप (Modal) में PDF खोलने और बंद करने का कोड
 function openPdfModal(url) {
   let modal = document.getElementById('pdf-modal');
+  
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'pdf-modal';
-    modal.style.cssText = `
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85); display: flex; justify-content: center;
-      align-items: center; z-index: 9999; padding: 10px; box-sizing: border-box;
-    `;
+    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 10px; box-sizing: border-box;';
+    
     modal.innerHTML = `
-      <div style="position: relative; width: 100%; max-width: 800px; height: 90vh; background: #1a1a1a; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
-        <button onclick="closePdfModal()" style="position: absolute; top: 10px; right: 15px; background: #ff4757; color: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: bold; z-index: 10000;">✕ Close</button>
+      <div style="position: relative; width: 100%; max-width: 800px; height: 90vh; background: #1a1a1a; border-radius: 8px;">
+        <button onclick="closePdfModal()" style="position: absolute; top: 10px; right: 15px; background: #ff4757; color: white; border: none; border-radius: 4px; padding: 5px 10px; cursor: pointer;">✕ Close</button>
         <iframe id="pdf-frame" src="" width="100%" height="100%" style="border: none; margin-top: 40px;"></iframe>
       </div>
     `;
     document.body.appendChild(modal);
   }
-  document.getElementById('pdf-frame').src = url;
+
+  const iframe = modal.querySelector('#pdf-frame');
+  if (iframe) {
+    iframe.src = url;
+  }
+  
   modal.style.display = 'flex';
 }
-
 function closePdfModal() {
   const modal = document.getElementById('pdf-modal');
   if (modal) {
@@ -170,11 +172,13 @@ function closeLegalModal() {
     modal.style.display = 'none';
   }
 }
-// Event Listener for Read Online buttons
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
   const btn = e.target.closest('.read-online-btn');
   if (btn) {
     const pdfUrl = btn.getAttribute('data-url');
-    openPdfModal(pdfUrl);
+    if (pdfUrl) {
+      const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
+      openPdfModal(embedUrl);
+    }
   }
 });
