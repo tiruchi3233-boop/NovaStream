@@ -1,7 +1,96 @@
-// script.js
 import { loadBooks } from './books.js';
 // अगर movies.js भी है तो: import { loadMovies } from './movies.js';
 
+// ==========================================
+// 1. Data Definitions (Legal Notices & Policies)
+// ==========================================
+const legalData = {
+  privacy: {
+    title: "Privacy Policy",
+    content: `
+      <p>Welcome to our platform. Your privacy is important to us.</p>
+      <h3>1. Information Collection</h3>
+      <p>We do not collect personal identity information from users browsing our public content.</p>
+      <h3>2. Content & Embedded Files</h3>
+      <p>Our platform hosts and embeds downloadable and viewable digital resources (PDFs, media) strictly for educational and streaming purposes.</p>
+      <h3>3. Cookies & Analytics</h3>
+      <p>We may use basic browser storage/cookies to enhance user interface controls and stream delivery performance.</p>
+      <h3>4. Contact Us</h3>
+      <p>If you have any queries regarding this Privacy Policy, please email us directly through the Contact Us link.</p>
+    `
+  },
+  terms: {
+    title: "Terms of Use",
+    content: `
+      <p>By accessing and using this website, you agree to comply with the following terms:</p>
+      <h3>1. Content Usage</h3>
+      <p>All content made available on this website is intended solely for personal, non-commercial media viewing and reading.</p>
+      <h3>2. Copyright & Intellectual Property</h3>
+      <p>We respect intellectual property rights. Books and media served are intended to comply with fair-use guidelines or public domain availability.</p>
+      <h3>3. Disclaimer of Liability</h3>
+      <p>We provide services on an "AS IS" basis. We are not liable for any third-party link redirections or network connectivity issues during downloads/streaming.</p>
+      <h3>4. Platform Updates</h3>
+      <p>We reserve the right to modify services, terms, and features at any time without prior individual notice.</p>
+    `
+  }
+};
+
+// ==========================================
+// 2. Global Modal Functions
+// ==========================================
+function openLegalModal(type) {
+  const modal = document.getElementById('legal-modal');
+  const title = document.getElementById('legal-title');
+  const content = document.getElementById('legal-content');
+
+  if (modal && legalData[type]) {
+    title.innerText = legalData[type].title;
+    content.innerHTML = legalData[type].content;
+    modal.style.display = 'flex';
+  }
+}
+
+function closeLegalModal() {
+  const modal = document.getElementById('legal-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// HTML onclick इवेंट्स में एक्सेस देने के लिए window ऑब्जेक्ट पर अटैच करें
+window.openLegalModal = openLegalModal;
+window.closeLegalModal = closeLegalModal;
+
+function openPdfModal(url) {
+  let modal = document.getElementById('pdf-modal');
+
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'pdf-modal';
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;display:flex;justify-content:center;align-items:center;padding:10px;box-sizing:border-box;';
+    
+    modal.innerHTML = `
+      <div style="position:relative;width:90%;height:90%;max-width:900px;background:#1a1a1a;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.5);">
+        <button id="close-pdf-btn" style="position:absolute;top:10px;right:15px;z-index:10000;background:#e50914;color:#fff;border:none;padding:8px 14px;font-size:16px;font-weight:bold;cursor:pointer;border-radius:4px;">✕ Close</button>
+        <iframe id="pdf-iframe" style="width:100%;height:100%;border:none;margin-top:40px;" src=""></iframe>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    document.getElementById('close-pdf-btn').onclick = function() {
+      modal.style.display = 'none';
+      document.getElementById('pdf-iframe').src = '';
+    };
+  }
+
+  const iframe = document.getElementById('pdf-iframe');
+  iframe.src = url;
+  modal.style.display = 'flex';
+}
+
+// ==========================================
+// 3. Application Initialization & Events
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   // 1. डेटा लोड करें
   loadBooks();
@@ -90,65 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-}// पॉप-अप (Modal) में PDF खोलने और बंद करने का कोड
-function openPdfModal(url) {
-  let modal = document.getElementById('pdf-modal');
-  
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'pdf-modal';
-    modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 10px; box-sizing: border-box;';
-}
 
-};
-
-function openLegalModal(type) {
-  const modal = document.getElementById('legal-modal');
-  const title = document.getElementById('legal-title');
-  const content = document.getElementById('legal-content');
-
-  if (modal && legalData[type]) {
-    title.innerText = legalData[type].title;
-    content.innerHTML = legalData[type].content;
-    modal.style.display = 'flex';
-  }
-}
-
-function closeLegalModal() {
-  const modal = document.getElementById('legal-modal');
-  if (modal) {
-    modal.style.display = 'none';
-  }
-  // PDF Modal खोलना
-function openPdfModal(url) {
-  let modal = document.getElementById('pdf-modal');
-  let iframe = document.getElementById('pdf-iframe');
-
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'pdf-modal';
-    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9999;display:flex;justify-content:center;align-items:center;';
-    
-    modal.innerHTML = `
-      <div style="position:relative;width:90%;height:90%;max-width:900px;background:#fff;border-radius:8px;overflow:hidden;">
-        <button id="close-pdf-btn" style="position:absolute;top:10px;right:15px;z-index:10000;background:#e50914;color:#fff;border:none;padding:8px 12px;font-size:16px;cursor:pointer;border-radius:4px;">✕ Close</button>
-        <iframe id="pdf-iframe" style="width:100%;height:100%;border:none;" src=""></iframe>
-      </div>
-    `;
-    document.body.appendChild(modal);
-
-    document.getElementById('close-pdf-btn').onclick = function() {
-      modal.style.display = 'none';
-      document.getElementById('pdf-iframe').src = '';
-    };
-  }
-
-  iframe = document.getElementById('pdf-iframe');
-  iframe.src = url;
-  modal.style.display = 'flex';
-}
-
-// Global Event Listener
+// 4. Global Click Event for Read Online Button
 document.addEventListener('click', function (e) {
   const btn = e.target.closest('.read-online-btn');
   if (btn) {
@@ -156,7 +188,7 @@ document.addEventListener('click', function (e) {
     const pdfUrl = btn.getAttribute('data-url');
     console.log("Button Clicked! PDF URL:", pdfUrl);
 
-    if (pdfUrl && pdfUrl !== 'undefined') {
+    if (pdfUrl && pdfUrl !== 'undefined' && pdfUrl.trim() !== '') {
       const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdfUrl)}`;
       openPdfModal(embedUrl);
     } else {
@@ -164,33 +196,4 @@ document.addEventListener('click', function (e) {
     }
   }
 });
-// Generic Legal Notices & Policies
-const legalData = {
-  privacy: {
-    title: "Privacy Policy",
-    content: `
-      <p>Welcome to our platform. Your privacy is important to us.</p>
-      <h3>1. Information Collection</h3>
-      <p>We do not collect personal identity information from users browsing our public content.</p>
-      <h3>2. Content & Embedded Files</h3>
-      <p>Our platform hosts and embeds downloadable and viewable digital resources (PDFs, media) strictly for educational and streaming purposes.</p>
-      <h3>3. Cookies & Analytics</h3>
-      <p>We may use basic browser storage/cookies to enhance user interface controls and stream delivery performance.</p>
-      <h3>4. Contact Us</h3>
-      <p>If you have any queries regarding this Privacy Policy, please email us directly through the Contact Us link.</p>
-    `
-  },
-  terms: {
-    title: "Terms of Use",
-    content: `
-      <p>By accessing and using this website, you agree to comply with the following terms:</p>
-      <h3>1. Content Usage</h3>
-      <p>All content made available on this website is intended solely for personal, non-commercial media viewing and reading.</p>
-      <h3>2. Copyright & Intellectual Property</h3>
-      <p>We respect intellectual property rights. Books and media served are intended to comply with fair-use guidelines or public domain availability.</p>
-      <h3>3. Disclaimer of Liability</h3>
-      <p>We provide services on an "AS IS" basis. We are not liable for any third-party link redirections or network connectivity issues during downloads/streaming.</p>
-      <h3>4. Platform Updates</h3>
-      <p>We reserve the right to modify services, terms, and features at any time without prior individual notice.</p>
-    `
-  }
+
