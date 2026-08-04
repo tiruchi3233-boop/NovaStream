@@ -571,58 +571,57 @@ footer {
   opacity: 1;
   pointer-events: auto;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+/* खुलने वाले सर्च बॉक्स का डिज़ाइन */
+.search-container {
+  display: none; /* शुरुआत में छुपा रहेगा */
+  position: absolute;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid #fff;
+  border-radius: 4px;
+  align-items: center;
+  padding: 5px 10px;
+  width: 250px;
+  z-index: 100;
 }
 
-.search-icon-inside {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin-right: 8px;
+/* जब सर्च बॉक्स एक्टिव (ओपन) हो */
+.search-container.active {
+  display: flex;
+  animation: slideLeft 0.3s ease forwards;
 }
 
-#searchInput {
-  width: 100%;
-  border: none;
-  outline: none;
+/* स्मूथ खुलने का एनीमेशन */
+@keyframes slideLeft {
+  from { width: 0; opacity: 0; }
+  to { width: 250px; opacity: 1; }
+}
+
+/* इनपुट फील्ड का डिज़ाइन */
+.search-container input {
   background: transparent;
-  color: #fff;
-  font-size: 0.9rem;
+  border: none;
+  color: white;
+  width: 100%;
+  outline: none;
+  font-size: 14px;
 }
 
-#searchInput::placeholder {
-  color: #64748b;
+.search-container input::placeholder {
+  color: #999;
 }
 
-/* Clear (✖️) Button */
+/* Cancel (X) बटन का डिज़ाइन */
 .clear-btn {
-  color: #94a3b8;
-  font-size: 1.1rem;
+  color: #999;
+  font-size: 22px;
   cursor: pointer;
-  display: none;
-  line-height: 1;
-  margin-left: 6px;
+  margin-left: 5px;
+  display: none; /* जब तक कुछ टाइप नहीं होगा, छुपा रहेगा */
 }
 
 .clear-btn:hover {
-  color: #e50914;
+  color: white;
 }
 
-/* Hide trigger button when open */
-.search-wrapper.is-open .search-trigger-btn {
-  display: none;
-}
-/* 🔍 Clean Search Icon (Background & Shadow Hata Kar) */
-#searchTriggerBtn {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    font-size: 22px;
-    cursor: pointer;
-    color: #b3b3b3;
-    transition: color 0.3s ease;
-    padding: 5px;
-}
-
-#searchTriggerBtn:hover {
-    color: #ffffff;
-}
 
