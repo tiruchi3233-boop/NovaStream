@@ -12,10 +12,27 @@
 
           <header>
     <div class="logo">✨ NovaStream</div>
-    <div class="search-box" style="position: relative;">
-      <input type="text" id="searchInput" placeholder="Search movies, books...">
-      <div id="searchDropdown" class="search-dropdown"></div>
-    </div>
+    <div class="search-wrapper">
+  <!-- 1. Search Icon -->
+  <button id="searchTriggerBtn" class="search-trigger-btn" aria-label="Search">
+    🔍
+  </button>
+
+  <!-- 2. Expandable Search Box Container -->
+  <div class="search-container" id="searchContainer">
+    <span class="search-icon-inside">🔍</span>
+    
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="Search movies, books..." 
+      autocomplete="off"
+    />
+    
+    <!-- Clear (✖️) Button -->
+    <span id="clearSearchBtn" class="clear-btn" title="Clear">&times;</span>
+  </div>
+</div>
   </header>
     <!-- Hero Section -->
 <div class="hero">
