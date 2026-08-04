@@ -41,36 +41,13 @@ fetch(url)
     });
   })
   .catch(error => console.error('Error fetching books:', error));
-
 // 2. Movies और Books दोनों के लिए ड्रॉपडाउन लाइव सर्च
 const searchInput = document.getElementById('searchInput');
 const searchDropdown = document.getElementById('searchDropdown');
-const searchTriggerBtn = document.getElementById('searchTriggerBtn');
-const searchWrapper = document.querySelector('.search-wrapper');
-const searchContainer = document.getElementById('searchContainer');
-const clearSearchBtn = document.getElementById('clearSearchBtn');
 
-// A. सर्च आइकॉन क्लिक होने पर एक्सपैंड/टॉगल करना
-if (searchTriggerBtn && searchInput) {
-  searchTriggerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (searchWrapper) searchWrapper.classList.toggle('is-open');
-    if (searchContainer) searchContainer.classList.toggle('active');
-
-    if (searchContainer && searchContainer.classList.contains('active')) {
-      searchInput.focus();
-    }
-  });
-}
-
-// B. लाइव सर्च इनपुट लॉजिक
 if (searchInput && searchDropdown) {
   searchInput.addEventListener('input', function(e) {
     const query = e.target.value.toLowerCase().trim();
-
-    if (clearSearchBtn) {
-      clearSearchBtn.style.display = query.length > 0 ? 'block' : 'none';
-    }
 
     if (query === '') {
       searchDropdown.style.display = 'none';
@@ -86,16 +63,15 @@ if (searchInput && searchDropdown) {
 
     allCards.forEach(card => {
       const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
-      const titleText = titleEl ? titleEl.innerText : '';
+const titleText = titleEl ? titleEl.innerText : '';
 
       if (titleText.toLowerCase().includes(query)) {
         matchesFound++;
 
         const img = card.querySelector('img');
         const imgSrc = img ? img.src : '';
-        
-        // एक्शन बटन या लिंक दोनों को सपोर्ट करना (Read Online Button / Movie Link)
-        const actionTarget = card.querySelector('button') || card.querySelector('a');
+        const link = card.querySelector('a');
+        const actionUrl = link ? link.href : '#';
 
         const item = document.createElement('div');
         item.style.cssText = `
@@ -118,8 +94,8 @@ if (searchInput && searchDropdown) {
         `;
 
         item.addEventListener('click', () => {
-          if (actionTarget) {
-            actionTarget.click(); // बटन या लिंक जो भी होगा सीधे ट्रिगर हो जाएगा
+          if (actionUrl && actionUrl !== '#') {
+            window.open(actionUrl, '_blank');
           }
         });
 
@@ -138,30 +114,10 @@ if (searchInput && searchDropdown) {
     searchDropdown.style.display = 'block';
   });
 
-  // Clear (X) बटन लॉजिक
-  if (clearSearchBtn) {
-    clearSearchBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      searchInput.value = '';
-      searchDropdown.style.display = 'none';
-      clearSearchBtn.style.display = 'none';
-      searchInput.focus();
-    });
-  }
-
-  // बाहर क्लिक करने पर बंद होना
   document.addEventListener('click', (e) => {
-    const isClickInside = searchInput.contains(e.target) || 
-                          searchDropdown.contains(e.target) || 
-                          (searchTriggerBtn && searchTriggerBtn.contains(e.target));
-
-    if (!isClickInside) {
+    if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
       searchDropdown.style.display = 'none';
-      if (searchInput.value.trim() === '') {
-        if (searchContainer) searchContainer.classList.remove('active');
-        if (searchWrapper) searchWrapper.classList.remove('is-open');
-        if (clearSearchBtn) clearSearchBtn.style.display = 'none';
-      }
+    }
   });
 }// पॉप-अप (Modal) में PDF खोलने और बंद करने का कोड
 function openPdfModal(url) {
