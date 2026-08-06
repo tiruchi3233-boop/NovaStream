@@ -623,5 +623,32 @@ footer {
 .clear-btn:hover {
   color: white;
 }
+.nav-menu {
+  display: none;
+  gap: 15px;
+}
+.nav-menu a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav-menu.show {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  background-color: #0d1117;
+  padding: 15px 20px;
+  z-index: 99;
+}
+@media (min-width: 768px) {
+  .nav-menu {
+    display: flex;
+    position: static;
+    flex-direction: row;
+  }
+}
 
 
