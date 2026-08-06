@@ -650,5 +650,44 @@ footer {
     flex-direction: row;
   }
 }
+/* Mobile Navigation Styling */
+@media (max-width: 768px) {
+  /* डिफ़ॉल्ट में ऊपर दिख रहे लिंक्स को छुपाना */
+  .nav-menu {
+    display: none !important;
+  }
+
+  /* जब ☰ पर क्लिक हो तब ड्रापडाउन मेन्यू दिखे */
+  .nav-menu.show {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #0d1117;
+    padding: 15px 20px;
+    z-index: 999;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .nav-menu.show a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid #1e293b;
+  }
+}
+
+/* Desktop View Layout */
+@media (min-width: 769px) {
+  button[onclick="toggleMenu()"] {
+    display: none; /* लैपटॉप/कंप्यूटर पर ☰ आइकन छुप जाएगा */
+  }
+  .nav-menu {
+    display: flex !important;
+    gap: 20px;
+  }
+}
 
 
