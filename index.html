@@ -32,21 +32,21 @@
 </script>
 </head>
 <body>
-  <header>
+    
+    <header>
     <div style="display: flex; align-items: center; gap: 12px;">
-      <!-- Mobile Menu Toggle Button -->
-      <button onclick="toggleMenu()" style="background: none; border: none; color: white; font-size: 22px; cursor: pointer;">☰</button>
+      <input type="checkbox" id="menu-toggle" style="display: none;">
+      <label for="menu-toggle" style="color: white; font-size: 24px; cursor: pointer;">☰</label>
+
       <div class="logo">✨ NovaStream</div>
     </div>
 
-    <!-- Navigation Menu Links -->
-    <nav id="navLinks" class="nav-menu">
+    <nav class="nav-menu">
       <a href="#">Home</a>
       <a href="#movies-container">Movies & Shows</a>
       <a href="#books-container">Books & PDFs</a>
     </nav>
 
-    <!-- Search Icon -->
     <div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
       <button id="searchTriggerBtn" class="search-trigger-btn" style="background: transparent; border: none; color: white;">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -67,6 +67,7 @@
       <div id="searchDropdown" class="search-dropdown" style="display: none; position: absolute; top: 100%; right: 0;"></div>
     </div>
   </header>
+
     <!-- Hero Section -->
 <div class="hero">
     <div class="hero-overlay"></div>
