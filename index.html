@@ -32,15 +32,17 @@
 </script>
 </head>
 <body>
+   <header>
+  <!-- Checkbox placed at the top level -->
+  <input type="checkbox" id="menu-toggle" style="display: none;">
+  
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <!-- Hamburger menu icon -->
+    <label for="menu-toggle" style="color: white; font-size: 24px; cursor: pointer;">&#9776;</label>
     
-    <header>
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <input type="checkbox" id="menu-toggle" style="display: none;">
-      <label for="menu-toggle" style="color: white; font-size: 24px; cursor: pointer;">☰</label>
-
-      <div class="logo">✨ NovaStream</div>
-    </div>
-
+    <!-- Logo -->
+    <div class="logo">✨ NovaStream</div>
+  </div>
     <nav class="nav-menu">
       <a href="#">Home</a>
       <a href="#movies-container">Movies & Shows</a>
@@ -109,13 +111,6 @@
     <hr style="border-color:#333; margin-bottom:15px;">
     <div id="legal-content" style="line-height:1.6; font-size:14px; color:#ccc;"></div>
   </div>
-</div>
-<script>
-  function toggleMenu() {
-    const nav = document.getElementById('navLinks');
-    nav.classList.toggle('show');
-  }
-</script>
 
     <!-- दोनों स्क्रिप्ट्स अलग-अलग लोड होंगी -->
     <script src="movies.js"></script>
