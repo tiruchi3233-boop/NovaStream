@@ -227,36 +227,50 @@ document.addEventListener('click', (e) => {
     }
   }
 });
-// मोबाइल मेन्यू के लिए JavaScript (CSS को ओवरराइड करने के लिए)
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
     const menuToggle = document.getElementById("menu-toggle");
     const navMenu = document.querySelector(".nav-menu");
 
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener("change", function() {
-            if (this.checked) {
-                // मेन्यू दिखाएं (इनलाइन स्टाइल लगाकर जो हर चीज़ पर भारी पड़ेगा)
-                navMenu.style.setProperty("display", "flex", "important");
-                navMenu.style.setProperty("flex-direction", "column", "important");
-                navMenu.style.setProperty("position", "absolute", "important");
-                navMenu.style.setProperty("top", "60px", "important");
-                navMenu.style.setProperty("left", "0", "important");
-                navMenu.style.setProperty("width", "100%", "important");
-                navMenu.style.setProperty("background-color", "#0d1117", "important");
-                navMenu.style.setProperty("z-index", "999", "important");
-            } else {
-                // मेन्यू छिपाएं
-                navMenu.style.setProperty("display", "none", "important");
-            }
-        });
+    if (!menuToggle || !navMenu) return;
 
-        // जब किसी लिंक (जैसे Home, Movies) पर क्लिक हो, तो मेन्यू अपने आप बंद हो जाए
-        const navLinks = navMenu.querySelectorAll("a");
-        navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                menuToggle.checked = false;
-                navMenu.style.setProperty("display", "none", "important");
-            });
+    // Injecting dynamic CSS to override conflicts cleanly
+    const mobileStyles = document.createElement("style");
+    mobileStyles.innerHTML = `
+        .nav-menu.mobile-active {
+            display: flex !important;
+            flex-direction: column !important;
+            position: absolute !important;
+            top: 60px !important;
+            left: 0 !important;
+            width: 100% !important;
+            background-color: rgba(10, 10, 15, 0.98) !important;
+            padding: 30px 20px !important;
+            gap: 25px !important;
+            box-shadow: 0px 10px 30px rgba(0,0,0,0.8) !important;
+            z-index: 999 !important;
+        }
+        .nav-menu.mobile-active a {
+            font-size: 16px !important;
+            display: block !important;
+            padding-bottom: 15px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            width: 100% !important;
+        }
+    `;
+    document.head.appendChild(mobileStyles);
+
+    // Toggle menu visibility
+    menuToggle.addEventListener("change", (e) => {
+        e.target.checked 
+            ? navMenu.classList.add("mobile-active") 
+            : navMenu.classList.remove("mobile-active");
+    });
+
+    // Close menu on link click
+    navMenu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            menuToggle.checked = false;
+            navMenu.classList.remove("mobile-active");
         });
-    }
+    });
 });
