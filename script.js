@@ -226,14 +226,10 @@ document.addEventListener('click', (e) => {
       searchTriggerBtn.style.display = 'block'; 
     }
   }
-});
-document.addEventListener('DOMContentLoaded', () => {
-    const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.querySelector('.nav-menu');
+const menuToggle = document.getElementById('menu-toggle');
+const navMenu = document.querySelector('.nav-menu');
 
-    if (!menuToggle || !navMenu) return;
-
-    // Inject essential scoped styles for the mobile sidebar
+if (menuToggle && navMenu) {
     const style = document.createElement('style');
     style.textContent = `
         @media (max-width: 768px) {
@@ -267,17 +263,15 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
 
-    // Toggle menu state based on checkbox
     menuToggle.addEventListener('change', (e) => {
         navMenu.classList.toggle('is-active', e.target.checked);
     });
 
-    // Close menu when a navigation link is clicked
     navMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             menuToggle.checked = false;
             navMenu.classList.remove('is-active');
         });
     });
+}
 });
-
