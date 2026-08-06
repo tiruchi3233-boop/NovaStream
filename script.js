@@ -226,52 +226,64 @@ document.addEventListener('click', (e) => {
       searchTriggerBtn.style.display = 'block'; 
     }
   }
-const menuToggle = document.getElementById('menu-toggle');
-const navMenu = document.querySelector('.nav-menu');
+  });
+document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navMenu = document.querySelector(".nav-menu");
 
-if (menuToggle && navMenu) {
-    const style = document.createElement('style');
-    style.textContent = `
+    if (!menuToggle || !navMenu) return;
+
+    // Injecting dynamic CSS to override conflicts cleanly
+    const mobileStyles = document.createElement("style");
+    mobileStyles.innerHTML = `
         @media (max-width: 768px) {
-            .nav-menu:not(.is-active) { 
-                display: none !important; 
+            /* 1. Ensures original names (Home, Movies) remain hidden when menu is closed */
+            .nav-menu:not(.mobile-active) {
+                display: none !important;
             }
-            .nav-menu.is-active {
+            
+            /* 2. Netflix/Prime style sidebar */
+            .nav-menu.mobile-active {
                 display: flex !important;
                 flex-direction: column !important;
                 position: fixed !important;
-                top: 0 !important; 
+                top: 0 !important;
                 left: 0 !important;
-                width: 65vw !important; 
+                width: 65% !important; /* Covers only 65% of the screen */
                 height: 100vh !important;
                 background-color: #0a0a0f !important;
                 padding: 80px 20px 30px !important;
                 gap: 25px !important;
-                box-shadow: 10px 0 30px rgba(0,0,0,0.8) !important;
+                box-shadow: 10px 0px 30px rgba(0,0,0,0.8) !important;
                 z-index: 9999 !important;
             }
-            .nav-menu.is-active a {
-                font-size: 16px !important; 
+            
+            /* 3. Link styling */
+            .nav-menu.mobile-active a {
+                font-size: 16px !important;
                 display: block !important;
-                padding-bottom: 15px !important; 
+                padding-bottom: 15px !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
                 width: 100% !important;
-                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
                 color: #ffffff !important;
                 text-decoration: none !important;
             }
         }
     `;
-    document.head.appendChild(style);
+    document.head.appendChild(mobileStyles);
 
-    menuToggle.addEventListener('change', (e) => {
-        navMenu.classList.toggle('is-active', e.target.checked);
+    // Toggle menu visibility
+    menuToggle.addEventListener("change", (e) => {
+        e.target.checked 
+            ? navMenu.classList.add("mobile-active") 
+            : navMenu.classList.remove("mobile-active");
     });
 
-    navMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    // Close menu on link click
+    navMenu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
             menuToggle.checked = false;
-            navMenu.classList.remove('is-active');
+            navMenu.classList.remove("mobile-active");
         });
     });
-}
 });
