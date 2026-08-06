@@ -227,3 +227,36 @@ document.addEventListener('click', (e) => {
     }
   }
 });
+// मोबाइल मेन्यू के लिए JavaScript (CSS को ओवरराइड करने के लिए)
+document.addEventListener("DOMContentLoaded", function() {
+    const menuToggle = document.getElementById("menu-toggle");
+    const navMenu = document.querySelector(".nav-menu");
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener("change", function() {
+            if (this.checked) {
+                // मेन्यू दिखाएं (इनलाइन स्टाइल लगाकर जो हर चीज़ पर भारी पड़ेगा)
+                navMenu.style.setProperty("display", "flex", "important");
+                navMenu.style.setProperty("flex-direction", "column", "important");
+                navMenu.style.setProperty("position", "absolute", "important");
+                navMenu.style.setProperty("top", "60px", "important");
+                navMenu.style.setProperty("left", "0", "important");
+                navMenu.style.setProperty("width", "100%", "important");
+                navMenu.style.setProperty("background-color", "#0d1117", "important");
+                navMenu.style.setProperty("z-index", "999", "important");
+            } else {
+                // मेन्यू छिपाएं
+                navMenu.style.setProperty("display", "none", "important");
+            }
+        });
+
+        // जब किसी लिंक (जैसे Home, Movies) पर क्लिक हो, तो मेन्यू अपने आप बंद हो जाए
+        const navLinks = navMenu.querySelectorAll("a");
+        navLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                menuToggle.checked = false;
+                navMenu.style.setProperty("display", "none", "important");
+            });
+        });
+    }
+});
