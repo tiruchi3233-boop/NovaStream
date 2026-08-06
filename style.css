@@ -643,13 +643,6 @@ footer {
   padding: 15px 20px;
   z-index: 99;
 }
-@media (min-width: 768px) {
-  .nav-menu {
-    display: flex;
-    position: static;
-    flex-direction: row;
-  }
-}
 @media (max-width: 768px) {
   .nav-menu {
     display: none;
@@ -676,15 +669,18 @@ footer {
     display: flex;
   }
 }
-
 @media (min-width: 769px) {
   #menu-toggle, label[for="menu-toggle"] {
     display: none;
   }
+  
   .nav-menu {
     display: flex !important;
+    position: static;      /* यहाँ से जोड़ा गया */
+    flex-direction: row;   /* यहाँ से जोड़ा गया */
     gap: 20px;
   }
+  
   .nav-menu a {
     color: #cbd5e1;
     text-decoration: none;
