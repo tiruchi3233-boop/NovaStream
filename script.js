@@ -227,50 +227,57 @@ document.addEventListener('click', (e) => {
     }
   }
 });
-document.addEventListener("DOMContentLoaded", () => {
-    const menuToggle = document.getElementById("menu-toggle");
-    const navMenu = document.querySelector(".nav-menu");
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
 
     if (!menuToggle || !navMenu) return;
 
-    // Injecting dynamic CSS to override conflicts cleanly
-    const mobileStyles = document.createElement("style");
-    mobileStyles.innerHTML = `
-        .nav-menu.mobile-active {
-            display: flex !important;
-            flex-direction: column !important;
-            position: absolute !important;
-            top: 60px !important;
-            left: 0 !important;
-            width: 100% !important;
-            background-color: rgba(10, 10, 15, 0.98) !important;
-            padding: 30px 20px !important;
-            gap: 25px !important;
-            box-shadow: 0px 10px 30px rgba(0,0,0,0.8) !important;
-            z-index: 999 !important;
-        }
-        .nav-menu.mobile-active a {
-            font-size: 16px !important;
-            display: block !important;
-            padding-bottom: 15px !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            width: 100% !important;
+    // Inject essential scoped styles for the mobile sidebar
+    const style = document.createElement('style');
+    style.textContent = `
+        @media (max-width: 768px) {
+            .nav-menu:not(.is-active) { 
+                display: none !important; 
+            }
+            .nav-menu.is-active {
+                display: flex !important;
+                flex-direction: column !important;
+                position: fixed !important;
+                top: 0 !important; 
+                left: 0 !important;
+                width: 65vw !important; 
+                height: 100vh !important;
+                background-color: #0a0a0f !important;
+                padding: 80px 20px 30px !important;
+                gap: 25px !important;
+                box-shadow: 10px 0 30px rgba(0,0,0,0.8) !important;
+                z-index: 9999 !important;
+            }
+            .nav-menu.is-active a {
+                font-size: 16px !important; 
+                display: block !important;
+                padding-bottom: 15px !important; 
+                width: 100% !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+                color: #ffffff !important;
+                text-decoration: none !important;
+            }
         }
     `;
-    document.head.appendChild(mobileStyles);
+    document.head.appendChild(style);
 
-    // Toggle menu visibility
-    menuToggle.addEventListener("change", (e) => {
-        e.target.checked 
-            ? navMenu.classList.add("mobile-active") 
-            : navMenu.classList.remove("mobile-active");
+    // Toggle menu state based on checkbox
+    menuToggle.addEventListener('change', (e) => {
+        navMenu.classList.toggle('is-active', e.target.checked);
     });
 
-    // Close menu on link click
-    navMenu.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
+    // Close menu when a navigation link is clicked
+    navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
             menuToggle.checked = false;
-            navMenu.classList.remove("mobile-active");
+            navMenu.classList.remove('is-active');
         });
     });
 });
+
