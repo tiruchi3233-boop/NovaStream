@@ -656,4 +656,58 @@ footer {
   }
 }
 
+/* ==========================================
+   TMDB Movies Container Fix
+   ========================================== */
+
+#movies-container {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 15px !important;
+    min-height: 250px !important;
+    width: 100% !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#movies-container .movie-card {
+    min-width: 140px !important;
+    width: 140px !important;
+    max-width: 140px !important;
+    flex-shrink: 0 !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transition: transform 0.2s ease-in-out !important;
+}
+
+#movies-container .movie-card:hover {
+    transform: scale(1.05) !important;
+}
+
+#movies-container .movie-card img {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    border-radius: 8px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: #222 !important;
+}
+
+#movies-container .movie-card h3 {
+    font-size: 13px !important;
+    margin-top: 8px !important;
+    color: #ffffff !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    width: 100% !important;
+    display: block !important;
+}
 
