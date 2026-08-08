@@ -286,4 +286,5 @@ document.addEventListener("DOMContentLoaded", () => {
             navMenu.classList.remove("mobile-active");
         });
     });
+  });
 
