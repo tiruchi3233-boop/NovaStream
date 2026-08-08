@@ -35,3 +35,55 @@ async function fetchMovies() {
 }
 
 document.addEventListener("DOMContentLoaded", fetchMovies);
+
+
+// ==========================================
+// TMDB API Integration (movies.js)
+// ==========================================
+
+const API_KEY = 'd8e144b86669ba7e5842f87b72071ec9'; 
+const BASE_URL = 'https://api.themoviedb.org/3';
+const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
+
+// 1. ट्रेंडिंग फिल्में फैच करना
+async function fetchTrendingMovies() {
+    try {
+        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=hi-IN`);
+        const data = await response.json();
+        displayMovies(data.results);
+    } catch (error) {
+        console.error("Error fetching movies:", error);
+    }
+}
+
+// 2. स्क्रीन पर दिखाना
+function displayMovies(movies) {
+    const container = document.getElementById('movies-container');
+    if (!container) return;
+
+    container.innerHTML = movies.map(movie => `
+        <div class="movie-card" style="min-width: 150px; cursor: pointer; text-align: center;" onclick="playTrailer(${movie.id})">
+            <img src="${movie.poster_path ? IMAGE_URL + movie.poster_path : 'https://via.placeholder.com/150x225'}" alt="${movie.title}" style="width: 100%; border-radius: 8px;">
+            <h3 style="font-size: 14px; margin-top: 5px; color: white;">${movie.title}</h3>
+        </div>
+    `).join('');
+}
+
+// 3. यूट्यूब ट्रेलर खोलना
+async function playTrailer(movieId) {
+    try {
+        const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`);
+        const data = await response.json();
+        const trailer = data.results.find(vid => vid.type === 'Trailer' && vid.site === 'YouTube');
+        
+        if (trailer) {
+            window.open(`https://www.youtube.com/watch?v=${trailer.key}`, '_blank');
+        } else {
+            alert('इस फिल्म का ऑफिशियल ट्रेलर उपलब्ध नहीं है।');
+        }
+    } catch (error) {
+        console.error("Error fetching trailer:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", fetchTrendingMovies);
