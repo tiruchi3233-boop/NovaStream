@@ -36,41 +36,49 @@ async function fetchMovies() {
 
 document.addEventListener("DOMContentLoaded", fetchMovies);
 
-
 // ==========================================
-// TMDB API Integration (movies.js)
+// TMDB API - Guaranteed Render Fix
 // ==========================================
 
 const API_KEY = 'd8e144b86669ba7e5842f87b72071ec9'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 
-// 1. ट्रेंडिंग फिल्में फैच करना
-async function fetchTrendingMovies() {
-    try {
-        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=hi-IN`);
-        const data = await response.json();
-        displayMovies(data.results);
-    } catch (error) {
-        console.error("Error fetching movies:", error);
-    }
-}
-
-// 2. स्क्रीन पर दिखाना
-function displayMovies(movies) {
+async function initTMDBMovies() {
     const container = document.getElementById('movies-container');
     if (!container) return;
 
-    container.innerHTML = movies.map(movie => `
-        <div class="movie-card" style="min-width: 150px; cursor: pointer; text-align: center;" onclick="playTrailer(${movie.id})">
-            <img src="${movie.poster_path ? IMAGE_URL + movie.poster_path : 'https://via.placeholder.com/150x225'}" alt="${movie.title}" style="width: 100%; border-radius: 8px;">
-            <h3 style="font-size: 14px; margin-top: 5px; color: white;">${movie.title}</h3>
-        </div>
-    `).join('');
+    try {
+        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=hi-IN`);
+        const data = await response.json();
+        
+        if (!data.results || data.results.length === 0) return;
+
+        // 1. कार्ड्स की HTML बनाना
+        const moviesHTML = data.results.map(movie => `
+            <div class="movie-card" onclick="playMovieTrailer(${movie.id})" style="min-width: 140px; width: 140px; flex-shrink: 0; cursor: pointer; text-align: center;">
+                <img src="${movie.poster_path ? IMAGE_URL + movie.poster_path : 'https://via.placeholder.com/140x200'}" 
+                     alt="${movie.title}" 
+                     style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; display: block;">
+                <h3 style="font-size: 13px; margin-top: 6px; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; width: 100%;">${movie.title}</h3>
+            </div>
+        `).join('');
+
+        // 2. HTML सेट करना
+        container.innerHTML = moviesHTML;
+
+        // 3. कंटेनर का स्टाइल फ़िक्स करना (ताकि गायब न हो)
+        container.style.display = 'flex';
+        container.style.overflowX = 'auto';
+        container.style.gap = '15px';
+        container.style.minHeight = '250px';
+
+    } catch (error) {
+        console.error("TMDB Fetch Error:", error);
+    }
 }
 
-// 3. यूट्यूब ट्रेलर खोलना
-async function playTrailer(movieId) {
+async function playMovieTrailer(movieId) {
     try {
         const response = await fetch(`${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}`);
         const data = await response.json();
@@ -79,11 +87,14 @@ async function playTrailer(movieId) {
         if (trailer) {
             window.open(`https://www.youtube.com/watch?v=${trailer.key}`, '_blank');
         } else {
-            alert('इस फिल्म का ऑफिशियल ट्रेलर उपलब्ध नहीं है।');
+            alert('इस फिल्म का ट्रेलर उपलब्ध नहीं है।');
         }
     } catch (error) {
-        console.error("Error fetching trailer:", error);
+        console.error("Trailer Fetch Error:", error);
     }
 }
 
-document.addEventListener("DOMContentLoaded", fetchTrendingMovies);
+// पेज पूरा लोड होने के 500ms बाद चलाएं ताकि script.js का रिसेट ओवरराइट न करे
+window.addEventListener('load', () => {
+    setTimeout(initTMDBMovies, 500);
+});
