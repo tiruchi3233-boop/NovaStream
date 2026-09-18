@@ -22,7 +22,7 @@ async function fetchMovies() {
         </div>
         
         <h3 class="movie-title" style="margin: 8px 0; font-size: 14px;">${movie.title}</h3>
-        <a href="${movie.video_url}" target="_blank" class="watch-now-btn">Watch Now</a>
+        <button onclick="openPlayer('${movie.video_url}')" class="watch-now-btn" style="cursor:pointer;">Watch Now</button>
       </div>
       `).join('');
     }
@@ -35,4 +35,27 @@ async function fetchMovies() {
 }
 
 document.addEventListener("DOMContentLoaded", fetchMovies);
+function openPlayer(url) {
+  // अगर लिंक में embed नहीं है तो यह खुद ब खुद embed बना देगा
+  let embedUrl = url;
+  if (url.includes('youtu.be/')) {
+    const id = url.split('youtu.be/')[1].split('?')[0];
+    embedUrl = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+  } else if (url.includes('watch?v=')) {
+    const id = url.split('watch?v=')[1].split('&')[0];
+    embedUrl = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
+  }
+
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('modalIframe');
+  iframe.src = embedUrl;
+  modal.style.display = 'flex';
+}
+
+function closePlayer() {
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('modalIframe');
+  iframe.src = ''; // वीडियो बंद करने के लिए
+  modal.style.display = 'none';
+}
 
