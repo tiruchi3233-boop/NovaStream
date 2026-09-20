@@ -287,4 +287,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   });
+// --- Books Modal Open/Close Logic ---
+document.addEventListener('click', function (e) {
+  // जब View All बटन पर क्लिक हो
+  if (e.target.closest('#openBooksBtn')) {
+    const modal = document.getElementById('booksModal');
+    if (modal) {
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  // जब मोडल के ✕ (Close) बटन पर क्लिक हो
+  if (e.target.closest('#closeBooksBtn')) {
+    const modal = document.getElementById('booksModal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  }
+});
 
