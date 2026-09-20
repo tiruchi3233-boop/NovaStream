@@ -298,13 +298,15 @@ document.addEventListener('click', function (e) {
     }
   }
 
-  // जब मोडल के ✕ (Close) बटन पर क्लिक हो
-  if (e.target.closest('#closeBooksBtn')) {
-    const modal = document.getElementById('booksModal');
-    if (modal) {
-      modal.style.display = 'none';
-      document.body.style.overflow = 'auto';
-    }
+  // Books Modal बंद करने के लिए डायरेक्ट फ़ंक्शन
+window.closeBooksModal = function() {
+  const modal = document.getElementById('booksModal');
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
   }
+};
+
+
 });
 
