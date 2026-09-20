@@ -12,7 +12,7 @@ export function loadBooks() {
       if (!container) return;
       container.innerHTML = '';
 
-      data.forEach(book => {
+            data.forEach((book, index) => {
         if (book.title) {
           const bookCard = `
             <div class="book-card" style="min-width: 150px; margin: 10px; text-align: center; color: white;">
@@ -36,7 +36,23 @@ export function loadBooks() {
               </a>
             </div>
           `;
-          container.innerHTML += bookCard;
+                    // 4 किताबों तक होमपेज पर जाएगा
+          if (index < 4) {
+            container.innerHTML += bookCard;
+          }
+          // 4 किताबें पूरी होते ही View All बटन जुड़ जाएगा
+          if (index === 4) {
+            container.innerHTML += `
+              <div id="openBooksBtn" style="min-width: 120px; height: 200px; margin: 10px; border: 2px dashed #e50914; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: #121620; color: white; flex-shrink: 0;">
+                <div style="background: #e50914; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 8px;">➔</div>
+                <span style="font-weight: bold; font-size: 14px;">View All</span>
+              </div>
+            `;
+          }
+          // ग्रिड वाले मोडल में सारी किताबें जुड़ती जाएँगी
+          const grid = document.getElementById('all-books-grid');
+          if (grid) grid.innerHTML += bookCard;
+
         }
       });
     })
