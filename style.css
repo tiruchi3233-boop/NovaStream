@@ -777,3 +777,10 @@ footer {
   background: #2a2e3d !important;
   border-radius: 4px !important;
 }
+/* VIEW ALL दबाने पर 2 कॉलम में ऊर्ध्वाधर लिस्ट */
+.movies-vertical-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 16px 12px;
+  overflow-x: visible !important;
+}
