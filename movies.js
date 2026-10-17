@@ -45,7 +45,7 @@ async function fetchMovies() {
     if (existingModal) existingModal.remove();
 
     const modalHtml = `
-      <div id="allMoviesModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0b0c0f; z-index: 99999; overflow-y: auto; padding: 20px 14px; box-sizing: border-box;">
+      <div id="allMoviesModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0b0c0f; z-index: 10000; overflow-y: auto; padding: 20px 14px; box-sizing: border-box;">
         
         <!-- हेडर और Cancel (✕) बटन -->
         <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid #1f222a;">
@@ -119,6 +119,7 @@ function openPlayer(url) {
   const modal = document.getElementById('videoModal');
   const iframe = document.getElementById('modalIframe');
   iframe.src = embedUrl;
+    modal.style.zIndex = "999999";
   modal.style.display = 'flex';
 }
 
