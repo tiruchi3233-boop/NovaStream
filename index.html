@@ -31,6 +31,22 @@
   const analytics = getAnalytics(app);
 </script>
     <script src="https://pl31103516.profitableratecpmnetwork.com/1b/04/d7/1b04d7d5293cd8011450a67bf9a5d086.js"></script>
+  <!-- PWA Manifest और थीम -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- Service Worker Register -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js")
+          .then((reg) => console.log("SW Registered!", reg))
+          .catch((err) => console.log("SW Failed!", err));
+      });
+    }
+  </script>
 </head>
 <body>
    <header>
