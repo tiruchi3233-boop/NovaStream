@@ -1,5 +1,5 @@
 {
-  "id": "/?pwa=1",
+  "id": "/?source=pwa",
   "name": "VajranovA",
   "short_name": "VajranovA",
   "description": "Stream HD Movies & Read Unlimited Books Anytime, Anywhere.",
@@ -11,13 +11,13 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/tiruchi3233-boop/NovaStream/main/icon-192.png",
+      "src": "https://raw.githubusercontent.com/tiruchi3233-boop/NovaStream/refs/heads/main/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://raw.githubusercontent.com/tiruchi3233-boop/NovaStream/main/icon-512.png",
+      "src": "https://raw.githubusercontent.com/tiruchi3233-boop/NovaStream/refs/heads/main/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
