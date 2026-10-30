@@ -163,7 +163,9 @@
 <script>
   let deferredPrompt;
   const installBtn = document.getElementById("pwaInstallBtn");
-
+if (window.matchMedia('(display-mode: standalone)').matches && installBtn) {
+  installBtn.style.display = "none";
+}
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt = e;
