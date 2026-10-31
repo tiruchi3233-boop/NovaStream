@@ -144,6 +144,24 @@
     </div>
     <div id="all-books-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; justify-items:center;"></div>
   </div>
+        <!-- 🎮 Games Section -->
+    <div class="section" id="games-section" style="margin-top: 25px;">
+      <h2 class="section-title">🎮 Mini Games Arcade</h2>
+      <div class="carousel" id="games-container" style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px; scrollbar-width: none;">
+        <!-- गेम्स के कार्ड games.js से यहाँ अपने आप लोड होंगे -->
+      </div>
+    </div>
+
+    <!-- 🎮 Game Player Modal -->
+    <div id="gameModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:999999; flex-direction:column; justify-content:center; align-items:center;">
+      <div style="display:flex; justify-content:space-between; align-items:center; width:95%; max-width:900px; margin-bottom:8px;">
+        <span style="color:#fbbf24; font-weight:bold; font-size:15px;">🎮 Playing Game</span>
+        <button onclick="closeGame()" style="background:transparent; border:none; color:#fff; font-size:26px; cursor:pointer;">&times;</button>
+      </div>
+      <div style="width:95%; max-width:900px; height:80vh; background:#000; border-radius:10px; overflow:hidden; border:1px solid #333;">
+        <iframe id="gameIframe" src="" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
+      </div>
+    </div>
 
   <!-- Footer Section -->
   <footer>
@@ -166,6 +184,7 @@
     <!-- दोनों स्क्रिप्ट्स अलग-अलग लोड होंगी -->
    <script type="module" src="script.js"></script>
     <script src="movies.js"></script>
+    <script src="games.js"></script>
 <script>
   let deferredPrompt;
   const installBtn = document.getElementById("pwaInstallBtn");
