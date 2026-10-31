@@ -210,30 +210,77 @@ if (window.matchMedia('(display-mode: standalone)').matches && installBtn) {
       }
     });
   }
- async function fetchLiveQuote() {
+ // कोट्स कभी रिपीट न हों - स्मार्ट ऑटो-रोटेशन सिस्टम
+async function fetchLiveQuote() {
   const qText = document.getElementById("quoteText");
   const qAuthor = document.getElementById("quoteAuthor");
   if (!qText || !qAuthor) return;
 
+  // 1. लाइव ऑनलाइन API (हज़ारों नए कोट्स - कभी रिपीट नहीं)
   try {
-    const res = await fetch("hindi_quotes.json");
-    if (!res.ok) throw new Error("File fetch failed");
-
-    const hindiList = await res.json();
-    const random = hindiList[Math.floor(Math.random() * hindiList.length)];
-
-    // text या quote में से जो भी मौजूद हो उसे दिखाएगा
-    const textVal = random.text || random.quote || "डर केवल वहीं तक रहता है जब तक आप सच्चाई का सामना नहीं करते।";
-    const authorVal = random.author || "Franz Kafka";
-
-    qText.textContent = `“${textVal}”`;
-    qAuthor.textContent = `— ${authorVal}`;
-  } catch (e) {
-    console.log("Hindi quotes load error, falling back to default:", e);
-    // अगर JSON फ़ाइल लोड होने में देरी हो या न मिले तो यह तुरंत दिखेगा
-    qText.textContent = "“डर केवल वहीं तक रहता है जब तक आप सच्चाई का सामना नहीं करते।”";
-    qAuthor.textContent = "— Franz Kafka (The Trial)";
+    const res = await fetch("https://dummyjson.com/quotes/random?ts=" + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.quote) {
+        qText.textContent = `“${data.quote}”`;
+        qAuthor.textContent = `— ${data.author}`;
+        return; // सफल होते ही यहाँ से बाहर
+      }
+    }
+  } catch (err) {
+    console.log("English API unreachable, trying local pool...", err);
   }
+
+  // 2. अगर ऑनलाइन API न चले, तो हिंदी फ़ाइल जाँचें
+  try {
+    const hRes = await fetch("hindi_quotes.json?ts=" + Date.now());
+    if (hRes.ok) {
+      const list = await hRes.json();
+      if (Array.isArray(list) && list.length > 0) {
+        displayNonRepeatingQuote(list, qText, qAuthor);
+        return;
+      }
+    }
+  } catch (err) {
+    console.log("hindi_quotes.json not found, using master pool...", err);
+  }
+
+  // 3. ऑफ़लाइन मास्टर पूल (बैकअप सूची)
+  const masterPool = [
+    { text: "डर केवल वहीं तक रहता है जब तक आप सच्चाई का सामना नहीं करते।", author: "Franz Kafka" },
+    { text: "उठो, जागो और तब तक मत रुको जब तक लक्ष्य की प्राप्ति न हो जाए।", author: "स्वामी विवेकानंद" },
+    { text: "ज्ञान में किया गया निवेश सबसे अधिक ब्याज देता है।", author: "Benjamin Franklin" },
+    { text: "सफलता पहले से की गई तैयारी पर निर्भर करती है।", author: "कन्फ्यूशियस" },
+    { text: "जीवन साइकिल चलाने जैसा है, संतुलन बनाए रखने के लिए आगे बढ़ते रहना पड़ता है।", author: "Albert Einstein" },
+    { text: "कठिन समय में समझदार व्यक्ति रास्ता खोजता है और कायर बहाना।", author: "चाणक्य" },
+    { text: "महान कार्य करने का एकमात्र तरीका अपने काम से प्यार करना है।", author: "Steve Jobs" },
+    { text: "अगर आप सूर्य की तरह चमकना चाहते हैं, तो पहले सूर्य की तरह तपना सीखें।", author: "डॉ. एपीजे अब्दुल कलाम" },
+    { text: "मन के हारे हार है, मन के जीते जीत।", author: "कबीरदास" },
+    { text: "समय और लहरें किसी का इंतज़ार नहीं करतीं।", author: "अज्ञात" }
+  ];
+
+  displayNonRepeatingQuote(masterPool, qText, qAuthor);
+}
+
+// यह फ़ंक्शन सुनिश्चित करता है कि जब तक सारे कोट्स न दिख जाएँ, कोई रिपीट न हो
+function displayNonRepeatingQuote(pool, textEl, authorEl) {
+  let seen = JSON.parse(localStorage.getItem("seen_vajra_quotes") || "[]");
+
+  // अगर सभी कोट्स देखे जा चुके हैं, तो मेमोरी रीसेट कर दें
+  if (seen.length >= pool.length) {
+    seen = [];
+  }
+
+  // केवल वही कोट्स जो अभी तक नहीं दिखे
+  const unseenIndices = pool.map((_, i) => i).filter(i => !seen.includes(i));
+  const chosenIndex = unseenIndices[Math.floor(Math.random() * unseenIndices.length)];
+
+  seen.push(chosenIndex);
+  localStorage.setItem("seen_vajra_quotes", JSON.stringify(seen));
+
+  const item = pool[chosenIndex];
+  textEl.textContent = `“${item.text || item.quote}”`;
+  authorEl.textContent = `— ${item.author}`;
 }
 
 fetchLiveQuote();
