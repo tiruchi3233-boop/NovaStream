@@ -194,25 +194,50 @@ if (window.matchMedia('(display-mode: standalone)').matches && installBtn) {
       }
     });
   }
-    async function fetchLiveQuote() {
+    // हिंदी के साहित्यिक उद्धरणों की सूची
+const hindiQuotes = [
+  { text: "डर केवल वहीं तक रहता है जब तक आप सच्चाई का सामना नहीं करते।", author: "फ़्राँत्स काफ़्का (The Trial)" },
+  { text: "खुशी किसी चीज़ को पाने में नहीं, बल्कि अपने होने के अहसास में है।", author: "एल. एम. मोंटगोमरी (The Blue Castle)" },
+  { text: "मनुष्य अपने विचारों से ही बंधा हुआ है और विचारों से ही मुक्त होता है।", author: "डब्लू. सॉमरसेट मॉम" },
+  { text: "कर्म का परिणाम समय तय करता है, तुम्हारा अधिकार केवल प्रयास पर है।", author: "महर्षि व्यास (महाभारत)" },
+  { text: "स्वतंत्रता केवल एक शब्द नहीं, आत्मा की सबसे गहरी पुकार है।", author: "प्रोस्पर मेरिमी (Carmen)" },
+  { text: "सत्य को प्रमाणित करने के लिए तर्कों की नहीं, समय की आवश्यकता होती है।", author: "महाभारत" },
+  { text: "ख्वाब और हकीकत के बीच का फासला केवल संकल्प का होता है।", author: "काफ़्का" },
+  { text: "साहस भय की अनुपस्थिति नहीं, बल्कि उस पर विजय पाने का नाम है।", author: "साहित्यिक विचार" }
+];
+
+async function fetchLiveQuote() {
   const qText = document.getElementById("quoteText");
   const qAuthor = document.getElementById("quoteAuthor");
   if (!qText || !qAuthor) return;
 
-  try {
-    const response = await fetch("https://dummyjson.com/quotes/random");
-    const data = await response.json();
+  // 50% बार हिंदी और 50% बार अंग्रेजी API
+  const showHindi = Math.random() < 0.5;
 
-    if (data && data.quote) {
-            qText.textContent = '\u201C' + data.quote + '\u201D';
-      qAuthor.textContent = '\u2014 ' + data.author;
+  if (showHindi) {
+    const randomHindi = hindiQuotes[Math.floor(Math.random() * hindiQuotes.length)];
+    qText.textContent = '\u201C' + randomHindi.text + '\u201D';
+    qAuthor.textContent = '\u2014 ' + randomHindi.author;
+  } else {
+    try {
+      const response = await fetch("https://dummyjson.com/quotes/random");
+      const data = await response.json();
+
+      if (data && data.quote) {
+        qText.textContent = '\u201C' + data.quote + '\u201D';
+        qAuthor.textContent = '\u2014 ' + data.author;
+      }
+    } catch (error) {
+      // अगर इंटरनेट धीमा हो तो बैकअप में हिंदी कोट लोड होगा
+      const fallback = hindiQuotes[0];
+      qText.textContent = '\u201C' + fallback.text + '\u201D';
+      qAuthor.textContent = '\u2014 ' + fallback.author;
     }
-  } catch (error) {
-    console.log("Quote API error:", error);
   }
 }
 
 fetchLiveQuote();
+
 
 </script>
 
