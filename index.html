@@ -215,38 +215,28 @@ if (window.matchMedia('(display-mode: standalone)').matches && installBtn) {
   const qAuthor = document.getElementById("quoteAuthor");
   if (!qText || !qAuthor) return;
 
-  // 50% संभावना: हिंदी या अंग्रेज़ी
-  const showHindi = Math.random() < 0.5;
+  try {
+    const res = await fetch("hindi_quotes.json");
+    if (!res.ok) throw new Error("File fetch failed");
 
-  if (showHindi) {
-    try {
-      const res = await fetch("hindi_quotes.json");
-      const hindiList = await res.json();
-      const randomHindi = hindiList[Math.floor(Math.random() * hindiList.length)];
+    const hindiList = await res.json();
+    const random = hindiList[Math.floor(Math.random() * hindiList.length)];
 
-      qText.textContent = '\u201C' + randomHindi.text + '\u201D';
-      qAuthor.textContent = '\u2014 ' + randomHindi.author;
-    } catch (e) {
-      console.log("Hindi quotes load error:", e);
-    }
-  } else {
-    try {
-      const response = await fetch("https://dummyjson.com/quotes/random");
-      const data = await response.json();
+    // text या quote में से जो भी मौजूद हो उसे दिखाएगा
+    const textVal = random.text || random.quote || "डर केवल वहीं तक रहता है जब तक आप सच्चाई का सामना नहीं करते।";
+    const authorVal = random.author || "Franz Kafka";
 
-      if (data && data.quote) {
-        qText.textContent = '\u201C' + data.quote + '\u201D';
-        qAuthor.textContent = '\u2014 ' + data.author;
-      }
-    } catch (error) {
-      console.log("English API error:", error);
-    }
+    qText.textContent = `“${textVal}”`;
+    qAuthor.textContent = `— ${authorVal}`;
+  } catch (e) {
+    console.log("Hindi quotes load error, falling back to default:", e);
+    // अगर JSON फ़ाइल लोड होने में देरी हो या न मिले तो यह तुरंत दिखेगा
+    qText.textContent = "“डर केवल वहीं तक रहता है जब तक आप सच्चाई का सामना नहीं करते।”";
+    qAuthor.textContent = "— Franz Kafka (The Trial)";
   }
 }
 
 fetchLiveQuote();
-
-
 
 </script>
 
