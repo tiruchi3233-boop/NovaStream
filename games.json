@@ -1,33 +1,33 @@
 [
   {
-    "title": "T-Rex Dino Run",
-    "image": "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=300&q=80",
-    "url": "https://elgoog.im/t-rex/"
-  },
-  {
-    "title": "Snake Classic",
-    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
-    "url": "https://elgoog.im/snake/"
-  },
-  {
-    "title": "Pac-Man Doodle",
-    "image": "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300&q=80",
-    "url": "https://elgoog.im/pacman/"
-  },
-  {
-    "title": "Space Invaders",
-    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
-    "url": "https://elgoog.im/space-invaders/"
-  },
-  {
-    "title": "Atari Breakout",
-    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80",
-    "url": "https://elgoog.im/breakout/"
-  },
-  {
-    "title": "Google Underwater",
+    "title": "2048 Original",
     "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
-    "url": "https://elgoog.im/underwater/"
+    "url": "https://gabrielecirulli.github.io/2048/"
+  },
+  {
+    "title": "Tower Stacker",
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
+    "url": "https://iamkun.github.io/tower_game/"
+  },
+  {
+    "title": "Retro Tetris",
+    "image": "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300&q=80",
+    "url": "https://chvin.github.io/react-tetris/"
+  },
+  {
+    "title": "Hextris Neon",
+    "image": "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=300&q=80",
+    "url": "https://hextris.github.io/hextris/"
+  },
+  {
+    "title": "Clumsy Bird",
+    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80",
+    "url": "https://ellisonleao.github.io/clumsy-bird/"
+  },
+  {
+    "title": "Classic Snake",
+    "image": "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=300&q=80",
+    "url": "https://stanko.github.io/html5-snake/"
   }
 ]
 
