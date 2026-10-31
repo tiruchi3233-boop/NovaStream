@@ -1,0 +1,33 @@
+[
+  {
+    "title": "2048 Puzzle",
+    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300&q=80",
+    "url": "https://play2048.co/"
+  },
+  {
+    "title": "T-Rex Dino Run",
+    "image": "https://images.unsplash.com/photo-1579373903781-fd5c0c30c4cd?w=300&q=80",
+    "url": "https://elgoog.im/t-rex/"
+  },
+  {
+    "title": "Snake Retro",
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300&q=80",
+    "url": "https://playsnake.org/"
+  },
+  {
+    "title": "Pac-Man Classic",
+    "image": "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=300&q=80",
+    "url": "https://freepacman.org/"
+  },
+  {
+    "title": "Flappy Bird",
+    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&q=80",
+    "url": "https://flappybird.io/"
+  },
+  {
+    "title": "Tic-Tac-Toe",
+    "image": "https://images.unsplash.com/photo-1668901382969-8c73e450a1f5?w=300&q=80",
+    "url": "https://playtictactoe.org/"
+  }
+]
+
