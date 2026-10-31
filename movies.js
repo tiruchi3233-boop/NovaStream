@@ -129,4 +129,37 @@ function closePlayer() {
   iframe.src = ''; // वीडियो बंद करने के लिए
   modal.style.display = 'none';
 }
+// Cinema Lights Off Mode
+let isCinemaMode = false;
+
+function toggleCinemaMode() {
+  const modal = document.getElementById("videoModal");
+  const btn = document.getElementById("cinemaModeBtn");
+  if (!modal || !btn) return;
+
+  isCinemaMode = !isCinemaMode;
+
+  if (isCinemaMode) {
+    modal.style.background = "#000000";
+    btn.innerHTML = "💡 Lights On";
+    btn.style.color = "#94a3b8";
+    btn.style.borderColor = "#94a3b8";
+  } else {
+    modal.style.background = "rgba(0, 0, 0, 0.9)";
+    btn.innerHTML = "💡 Lights Off";
+    btn.style.color = "#fbbf24";
+    btn.style.borderColor = "#fbbf24";
+  }
+}
+
+// जब प्लेयर बंद हो तो सिनेमा मोड अपने आप बंद (रीसेट) हो जाए
+const prevClosePlayer = window.closePlayer;
+window.closePlayer = function() {
+  if (isCinemaMode) {
+    toggleCinemaMode();
+  }
+  if (typeof prevClosePlayer === "function") {
+    prevClosePlayer();
+  }
+};
 
