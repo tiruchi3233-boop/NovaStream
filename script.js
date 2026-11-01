@@ -27,7 +27,6 @@ window.openPdfModal = function(url) {
     document.body.appendChild(modal);
   }
   
-  // Google Docs Viewer का लिंक ताकि मोबाइल में डाउनलोड न हो, सीधे खुले
   const embedUrl = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(url)}`;
   document.getElementById('pdf-frame').src = embedUrl;
   modal.style.display = 'flex';
@@ -111,10 +110,10 @@ if (searchInput && searchDropdown) {
     }
 
     searchDropdown.innerHTML = '';
-         let matchesFound = 0;
+    let matchesFound = 0;
     const seenTitles = new Set();
 
-    const allCards = document.querySelectorAll('.book-card, .movie-card, #movies-container > div, #books-container > div, #all-books-grid > div, #all-movies-grid > div');
+    const allCards = document.querySelectorAll('.book-card, .movie-card, #movies-container > div, #books-container > div, #all-books-grid > div, #all-movies-grid > div, #allMoviesModal .movie-card');
 
     allCards.forEach(card => {
       const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
@@ -171,11 +170,6 @@ if (searchInput && searchDropdown) {
     }
 
     searchDropdown.style.display = 'block';
-
-      `;
-    }
-
-    searchDropdown.style.display = 'block';
   });
 
   document.addEventListener('click', (e) => {
@@ -184,6 +178,7 @@ if (searchInput && searchDropdown) {
     }
   });
 }
+
 // ==========================================
 // Expandable Search Bar Logic
 // ==========================================
@@ -236,70 +231,65 @@ document.addEventListener('click', (e) => {
       searchTriggerBtn.style.display = 'block'; 
     }
   }
-  });
+});
+
 document.addEventListener("DOMContentLoaded", () => {
-    const menuToggle = document.getElementById("menu-toggle");
-    const navMenu = document.querySelector(".nav-menu");
+  const menuToggle = document.getElementById("menu-toggle");
+  const navMenu = document.querySelector(".nav-menu");
 
-    if (!menuToggle || !navMenu) return;
+  if (!menuToggle || !navMenu) return;
 
-    // Injecting dynamic CSS to override conflicts cleanly
-    const mobileStyles = document.createElement("style");
-    mobileStyles.innerHTML = `
-        @media (max-width: 768px) {
-            /* 1. Ensures original names (Home, Movies) remain hidden when menu is closed */
-            .nav-menu:not(.mobile-active) {
-                display: none !important;
-            }
-            
-            /* 2. Netflix/Prime style sidebar */
-            .nav-menu.mobile-active {
-                display: flex !important;
-                flex-direction: column !important;
-                position: fixed !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 65% !important; /* Covers only 65% of the screen */
-                height: 100vh !important;
-                background-color: #0a0a0f !important;
-                padding: 80px 20px 30px !important;
-                gap: 25px !important;
-                box-shadow: 10px 0px 30px rgba(0,0,0,0.8) !important;
-                z-index: 9999 !important;
-            }
-            
-            /* 3. Link styling */
-            .nav-menu.mobile-active a {
-                font-size: 16px !important;
-                display: block !important;
-                padding-bottom: 15px !important;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-                width: 100% !important;
-                color: #ffffff !important;
-                text-decoration: none !important;
-            }
-        }
-    `;
-    document.head.appendChild(mobileStyles);
+  const mobileStyles = document.createElement("style");
+  mobileStyles.innerHTML = `
+      @media (max-width: 768px) {
+          .nav-menu:not(.mobile-active) {
+              display: none !important;
+          }
+          
+          .nav-menu.mobile-active {
+              display: flex !important;
+              flex-direction: column !important;
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 65% !important;
+              height: 100vh !important;
+              background-color: #0a0a0f !important;
+              padding: 80px 20px 30px !important;
+              gap: 25px !important;
+              box-shadow: 10px 0px 30px rgba(0,0,0,0.8) !important;
+              z-index: 9999 !important;
+          }
+          
+          .nav-menu.mobile-active a {
+              font-size: 16px !important;
+              display: block !important;
+              padding-bottom: 15px !important;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+              width: 100% !important;
+              color: #ffffff !important;
+              text-decoration: none !important;
+          }
+      }
+  `;
+  document.head.appendChild(mobileStyles);
 
-    // Toggle menu visibility
-    menuToggle.addEventListener("change", (e) => {
-        e.target.checked 
-            ? navMenu.classList.add("mobile-active") 
-            : navMenu.classList.remove("mobile-active");
-    });
-
-    // Close menu on link click
-    navMenu.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
-            menuToggle.checked = false;
-            navMenu.classList.remove("mobile-active");
-        });
-    });
+  menuToggle.addEventListener("change", (e) => {
+      e.target.checked 
+          ? navMenu.classList.add("mobile-active") 
+          : navMenu.classList.remove("mobile-active");
   });
+
+  navMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+          menuToggle.checked = false;
+          navMenu.classList.remove("mobile-active");
+      });
+  });
+});
+
 // --- Books Modal Open/Close Logic ---
 document.addEventListener('click', function (e) {
-  // जब View All बटन पर क्लिक हो
   if (e.target.closest('#openBooksBtn')) {
     const modal = document.getElementById('booksModal');
     if (modal) {
@@ -308,15 +298,11 @@ document.addEventListener('click', function (e) {
     }
   }
 
-  // Books Modal बंद करने के लिए डायरेक्ट फ़ंक्शन
-window.closeBooksModal = function() {
-  const modal = document.getElementById('booksModal');
-  if (modal) {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-};
-
-
+  window.closeBooksModal = function() {
+    const modal = document.getElementById('booksModal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  };
 });
-
