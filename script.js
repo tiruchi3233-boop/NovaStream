@@ -111,15 +111,17 @@ if (searchInput && searchDropdown) {
     }
 
     searchDropdown.innerHTML = '';
-    let matchesFound = 0;
+     let matchesFound = 0;
+    const seenTitles = new Set(); // 👈 1. नया: डुप्लीकेट रोकने के लिए
 
-    const allCards = document.querySelectorAll('.book-card, #movies-container > div, .movie-card');
+    const allCards = document.querySelectorAll('.book-card, .movie-card, #movies-container > div, #books-container > div, #all-books-grid > div, #all-movies-grid > div');
 
     allCards.forEach(card => {
       const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
-      const titleText = titleEl ? titleEl.innerText : '';
+      const titleText = titleEl ? titleEl.innerText.trim() : '';
 
-      if (titleText.toLowerCase().includes(query)) {
+      if (titleText.toLowerCase().includes(query) && !seenTitles.has(titleText.toLowerCase())) { // 👈 2. शर्त जोड़ी गई
+        seenTitles.add(titleText.toLowerCase()); // 👈 3. लिस्ट में दर्ज किया
         matchesFound++;
 
         const img = card.querySelector('img');
