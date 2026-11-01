@@ -111,8 +111,8 @@ if (searchInput && searchDropdown) {
     }
 
     searchDropdown.innerHTML = '';
-     let matchesFound = 0;
-    const seenTitles = new Set(); // 👈 1. नया: डुप्लीकेट रोकने के लिए
+         let matchesFound = 0;
+    const seenTitles = new Set();
 
     const allCards = document.querySelectorAll('.book-card, .movie-card, #movies-container > div, #books-container > div, #all-books-grid > div, #all-movies-grid > div');
 
@@ -120,15 +120,14 @@ if (searchInput && searchDropdown) {
       const titleEl = card.querySelector('.movie-title, .book-title, h3, h4');
       const titleText = titleEl ? titleEl.innerText.trim() : '';
 
-      if (titleText.toLowerCase().includes(query) && !seenTitles.has(titleText.toLowerCase())) { // 👈 2. शर्त जोड़ी गई
-        seenTitles.add(titleText.toLowerCase()); // 👈 3. लिस्ट में दर्ज किया
+      if (titleText.toLowerCase().includes(query) && !seenTitles.has(titleText.toLowerCase())) {
+        seenTitles.add(titleText.toLowerCase());
         matchesFound++;
 
         const img = card.querySelector('img');
         const imgSrc = img ? img.src : '';
         const btn = card.querySelector('button');
         const link = card.querySelector('a');
-        const actionUrl = link ? link.href : '#';
 
         const item = document.createElement('div');
         item.style.cssText = `
@@ -151,14 +150,12 @@ if (searchInput && searchDropdown) {
         `;
 
         item.addEventListener('click', () => {
-  if (btn) {
-    btn.click();
-  } else if (link && link.href) {
-    window.open(link.href, '_blank');
-  }
-  searchDropdown.style.display = 'none';
-});
-        
+          if (btn) {
+            btn.click();
+          } else if (link && link.href) {
+            window.open(link.href, '_blank');
+          }
+          searchDropdown.style.display = 'none';
         });
 
         searchDropdown.appendChild(item);
@@ -170,6 +167,11 @@ if (searchInput && searchDropdown) {
         <div style="padding: 12px; text-align: center; color: #94a3b8; font-size: 13px;">
           ❌ No results found for "<b>${e.target.value}</b>"
         </div>
+      `;
+    }
+
+    searchDropdown.style.display = 'block';
+
       `;
     }
 
