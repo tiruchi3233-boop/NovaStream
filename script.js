@@ -126,6 +126,7 @@ if (searchInput && searchDropdown) {
 
         const img = card.querySelector('img');
         const imgSrc = img ? img.src : '';
+        const btn = card.querySelector('button');
         const link = card.querySelector('a');
         const actionUrl = link ? link.href : '#';
 
@@ -150,9 +151,14 @@ if (searchInput && searchDropdown) {
         `;
 
         item.addEventListener('click', () => {
-          if (actionUrl && actionUrl !== '#') {
-            window.open(actionUrl, '_blank');
-          }
+  if (btn) {
+    btn.click();
+  } else if (link && link.href) {
+    window.open(link.href, '_blank');
+  }
+  searchDropdown.style.display = 'none';
+});
+        
         });
 
         searchDropdown.appendChild(item);
