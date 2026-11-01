@@ -56,14 +56,14 @@ async function fetchMovies() {
         <!-- 2-कॉलम ऊर्ध्वाधर (Vertical) ग्रिड -->
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 12px;">
           ${movies.map(movie => `
-            <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <div class="movie-card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
               <div style="position: relative; width: 100%; aspect-ratio: 2/3; border-radius: 8px; overflow: hidden; background: #1a1c23;">
                 <span style="position: absolute; top: 6px; right: 6px; background: #e50914; color: #fff; font-size: 10px; font-weight: bold; padding: 2px 5px; border-radius: 3px; z-index: 2;">
                   ${movie.badge || "4K UHD"}
                 </span>
                 <img src="${movie.poster}" alt="${movie.title}" loading="lazy" style="width: 100%; height: 100%; object-fit: cover;">
               </div>
-              <h3 style="color: white; font-size: 13px; font-weight: 600; margin: 8px 0 6px 0; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${movie.title}</h3>
+              <h3 class="movie-title" style="color: white; font-size: 13px; font-weight: 600; margin: 8px 0 6px 0; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${movie.title}</h3>
               <button onclick="openPlayer('${movie.video_url}')" class="watch-now-btn" style="cursor: pointer; width: 100%; max-width: 130px; font-size: 11px; padding: 6px 10px;">Watch Now</button>
             </div>
           `).join('')}
