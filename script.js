@@ -306,3 +306,58 @@ document.addEventListener('click', function (e) {
     }
   };
 });
+// ==========================================
+// Bottom Navigation & Smart Back Navigation
+// ==========================================
+
+window.switchTab = function(tabName, pushToHistory = true) {
+  const tabs = ['home', 'movies', 'books', 'games', 'shopping'];
+  const buttons = document.querySelectorAll('#bottomNav .nav-tab-btn');
+
+  // 1. एक्टिव टैब का नीला रंग सेट करना
+  buttons.forEach((btn, index) => {
+    if (tabs[index] === tabName) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  // 2. टॉप बैक बटन (←) दिखाना या छुपाना
+  const topBack = document.getElementById('topBackBtn');
+  if (topBack) {
+    topBack.style.display = (tabName === 'home') ? 'none' : 'inline-block';
+  }
+
+  // 3. सेक्शन्स (Views) को टॉगल करना
+  document.querySelectorAll('.app-view').forEach(view => {
+    view.style.display = 'none';
+  });
+  const currentView = document.getElementById(`view-${tabName}`);
+  if (currentView) {
+    currentView.style.display = 'block';
+  }
+
+  // 4. ब्राउज़र हिस्ट्री में रिकॉर्ड जोड़ना (ताकि फ़ोन का बैक बटन काम करे)
+  if (pushToHistory) {
+    history.pushState({ activeTab: tabName }, '', `#${tabName}`);
+  }
+
+  // पेज को ऊपर स्क्रॉल करना
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// फ़ोन का बैक बटन या स्वाइप जेस्चर दबाने पर हैंडल करना
+window.addEventListener('popstate', (e) => {
+  if (e.state && e.state.activeTab) {
+    switchTab(e.state.activeTab, false);
+  } else {
+    // अगर बिल्कुल पीछे चले गए, तो वेबसाइट बंद होने के बजाय होम पर आ जाए
+    switchTab('home', false);
+  }
+});
+
+// पेज लोड होते ही होम स्टेट सेट करना
+document.addEventListener('DOMContentLoaded', () => {
+  history.replaceState({ activeTab: 'home' }, '', '#home');
+});
