@@ -375,3 +375,59 @@ window.addEventListener('popstate', (e) => {
     switchTab('home', false);
   }
 });
+// ==========================================
+// Community Comments System
+// ==========================================
+
+// कमेंट्स लोड करना
+window.loadLiveComments = function() {
+  const container = document.getElementById('commentsList');
+  if (!container) return;
+
+  const comments = JSON.parse(localStorage.getItem('vajra_community_comments') || '[]');
+
+  if (comments.length === 0) {
+    container.innerHTML = '<p style="color: #64748b; font-size: 13px; text-align: center;">अभी कोई कमेंट नहीं है। पहले व्यक्ति बनें जो अपनी राय लिखे!</p>';
+    return;
+  }
+
+  container.innerHTML = comments.map(c => `
+    <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span style="font-weight: 600; color: #38bdf8; font-size: 14px;">${c.name}</span>
+        <span style="color: #64748b; font-size: 11px;">${c.time}</span>
+      </div>
+      <p style="color: #e2e8f0; font-size: 13px; line-height: 1.4; margin: 0; word-break: break-word;">${c.text}</p>
+    </div>
+  `).join('');
+};
+
+// नया कमेंट पोस्ट करना
+window.postNewComment = function() {
+  const nameInput = document.getElementById('commenterName');
+  const textInput = document.getElementById('commentText');
+
+  const name = nameInput?.value.trim();
+  const text = textInput?.value.trim();
+
+  if (!name || !text) {
+    alert('कृपया अपना नाम और संदेश दोनों लिखें!');
+    return;
+  }
+
+  const now = new Date();
+  const timeString = now.toLocaleDateString('hi-IN', { day: 'numeric', month: 'short' }) + ', ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  const newComment = {
+    name: name,
+    text: text,
+    time: timeString
+  };
+
+  const comments = JSON.parse(localStorage.getItem('vajra_community_comments') || '[]');
+  comments.unshift(newComment);
+  localStorage.setItem('vajra_community_comments', JSON.stringify(comments));
+
+  textInput.value = '';
+  loadLiveComments();
+};
