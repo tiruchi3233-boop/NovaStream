@@ -307,14 +307,14 @@ document.addEventListener('click', function (e) {
   };
 });
 // ==========================================
-// Bottom Navigation & View Switcher (Fixed)
+// Bottom Navigation (6 Tabs) & Community System
 // ==========================================
 
 window.switchTab = function(tabName, pushToHistory = true) {
-  const tabs = ['home', 'movies', 'books', 'games', 'shopping'];
+  const tabs = ['home', 'movies', 'books', 'games', 'shopping', 'community'];
   const buttons = document.querySelectorAll('#bottomNav .nav-tab-btn');
 
-  // 1. एक्टिव टैब का रंग बदलना
+  // 1. एक्टिव टैब का नीला रंग
   buttons.forEach((btn, index) => {
     if (tabs[index] === tabName) {
       btn.classList.add('active');
@@ -323,43 +323,37 @@ window.switchTab = function(tabName, pushToHistory = true) {
     }
   });
 
-  // 2. एलिमेंट्स को ढूँढना
+  // 2. एलिमेंट्स
   const heroSection = document.querySelector('.hero-section');
   const moviesSection = document.getElementById('movies-container')?.closest('.section');
   const booksSection = document.getElementById('books-container')?.closest('.section');
   const gamesSection = document.getElementById('games-section');
+  const communitySection = document.getElementById('community-section');
   const topBackBtn = document.getElementById('topBackBtn');
 
-  // शॉपिंग सेक्शन
-  let shoppingSection = document.getElementById('shopping-section');
-  if (!shoppingSection && tabName === 'shopping') {
-    shoppingSection = document.createElement('div');
-    shoppingSection.id = 'shopping-section';
-    shoppingSection.className = 'section';
-    shoppingSection.style.cssText = 'text-align: center; padding: 60px 20px; color: #94a3b8;';
-    shoppingSection.innerHTML = '<h2 style="color: #38bdf8; font-size: 24px; margin-bottom: 8px;">🛍️ Shopping Store</h2><p>Exclusive merchandise & products coming soon!</p>';
-    const footer = document.querySelector('footer');
-    if (footer) footer.parentNode.insertBefore(shoppingSection, footer);
-  }
-
-  // 3. टैब के अनुसार सेक्शन दिखाना/छुपाना ('' रखने से CSS का मूल लेआउट लागू रहेगा)
+  // 3. टैब के अनुसार दिखाना / छिपाना
   if (tabName === 'home') {
-    if (heroSection) heroSection.style.display = '';
-    if (moviesSection) moviesSection.style.display = '';
-    if (booksSection) booksSection.style.display = '';
-    if (gamesSection) gamesSection.style.display = '';
-    if (shoppingSection) shoppingSection.style.display = 'none';
+    if (heroSection) heroSection.style.display = 'flex';
+    if (moviesSection) moviesSection.style.display = 'block';
+    if (booksSection) booksSection.style.display = 'block';
+    if (gamesSection) gamesSection.style.display = 'block';
+    if (communitySection) communitySection.style.display = 'none';
     if (topBackBtn) topBackBtn.style.display = 'none';
   } else {
     if (heroSection) heroSection.style.display = 'none';
-    if (moviesSection) moviesSection.style.display = (tabName === 'movies') ? '' : 'none';
-    if (booksSection) booksSection.style.display = (tabName === 'books') ? '' : 'none';
-    if (gamesSection) gamesSection.style.display = (tabName === 'games') ? '' : 'none';
-    if (shoppingSection) shoppingSection.style.display = (tabName === 'shopping') ? '' : 'none';
+    if (moviesSection) moviesSection.style.display = (tabName === 'movies') ? 'block' : 'none';
+    if (booksSection) booksSection.style.display = (tabName === 'books') ? 'block' : 'none';
+    if (gamesSection) gamesSection.style.display = (tabName === 'games') ? 'block' : 'none';
+    
+    if (communitySection) {
+      communitySection.style.display = (tabName === 'community') ? 'block' : 'none';
+      if (tabName === 'community') {
+        loadLiveComments();
+      }
+    }
     if (topBackBtn) topBackBtn.style.display = 'inline-block';
   }
 
-  // 4. ब्राउज़र हिस्ट्री जोड़ना
   if (pushToHistory) {
     history.pushState({ activeTab: tabName }, '', `#${tabName}`);
   }
@@ -367,7 +361,7 @@ window.switchTab = function(tabName, pushToHistory = true) {
   window.scrollTo({ top: 0, behavior: 'instant' });
 };
 
-// फ़ोन का बैक बटन हैंडल करना
+// फ़ोन का बैक बटन
 window.addEventListener('popstate', (e) => {
   if (e.state && e.state.activeTab) {
     switchTab(e.state.activeTab, false);
@@ -375,11 +369,11 @@ window.addEventListener('popstate', (e) => {
     switchTab('home', false);
   }
 });
+
 // ==========================================
 // Community Comments System
 // ==========================================
 
-// कमेंट्स लोड करना
 window.loadLiveComments = function() {
   const container = document.getElementById('commentsList');
   if (!container) return;
@@ -402,7 +396,6 @@ window.loadLiveComments = function() {
   `).join('');
 };
 
-// नया कमेंट पोस्ट करना
 window.postNewComment = function() {
   const nameInput = document.getElementById('commenterName');
   const textInput = document.getElementById('commentText');
@@ -431,3 +424,4 @@ window.postNewComment = function() {
   textInput.value = '';
   loadLiveComments();
 };
+
