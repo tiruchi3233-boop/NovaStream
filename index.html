@@ -214,7 +214,8 @@
     padding-bottom: 70px !important;
   }
 </style>
-
+    
+<!-- 💬 6 टैब वाला बॉटम नेविगेशन बार -->
 <nav id="bottomNav">
   <button class="nav-tab-btn active" onclick="switchTab('home')">
     <span class="tab-icon">🏠</span>
@@ -236,34 +237,32 @@
     <span class="tab-icon">🛍️</span>
     <span class="tab-label">Shopping</span>
   </button>
-</nav>
-    <nav id="bottomNav">
-  <button class="nav-tab-btn active" onclick="switchTab('home')">
-    <span class="tab-icon">🏠</span>
-    <span class="tab-label">Home</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('movies')">
-    <span class="tab-icon">🎬</span>
-    <span class="tab-label">Movies</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('books')">
-    <span class="tab-icon">📚</span>
-    <span class="tab-label">Books</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('games')">
-    <span class="tab-icon">🎮</span>
-    <span class="tab-label">Games</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('shopping')">
-    <span class="tab-icon">🛍️</span>
-    <span class="tab-label">Shopping</span>
-  </button>
-  <!-- 💬 नया कम्युनिटी बटन -->
   <button class="nav-tab-btn" onclick="switchTab('community')">
     <span class="tab-icon">💬</span>
     <span class="tab-label">Community</span>
   </button>
 </nav>
+
+<!-- 💬 Community & Comments Section -->
+<div class="section" id="community-section" style="display: none; padding: 25px 15px; max-width: 650px; margin: 0 auto; box-sizing: border-box;">
+  <h2 class="section-title" style="text-align: center; margin-bottom: 20px;">💬 Community Hub</h2>
+
+  <!-- नया कमेंट फॉर्म -->
+  <div style="background: #131d31; border: 1px solid #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+    <input type="text" id="commenterName" placeholder="आपका नाम (Your Name)" style="width: 100%; box-sizing: border-box; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 14px; margin-bottom: 10px; outline: none;">
+    <textarea id="commentText" rows="3" placeholder="अपनी राय या संदेश लिखें..." style="width: 100%; box-sizing: border-box; padding: 10px 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 14px; margin-bottom: 12px; outline: none; resize: vertical;"></textarea>
+    <button id="postCommentBtn" onclick="postNewComment()" style="width: 100%; background: #2563eb; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer;">
+      ✍️ Post Comment
+    </button>
+  </div>
+
+  <!-- कमेंट्स लिस्ट -->
+  <h3 style="color: #94a3b8; font-size: 16px; margin-bottom: 12px; border-bottom: 1px solid #1e293b; padding-bottom: 8px;">Recent Messages</h3>
+  <div id="commentsList" style="display: flex; flex-direction: column; gap: 12px;">
+    <p style="color: #64748b; font-size: 13px; text-align: center;">अभी कोई कमेंट नहीं है। पहले व्यक्ति बनें जो अपनी राय लिखे!</p>
+  </div>
+</div>
+
 
   <!-- Footer Section -->
   <footer>
