@@ -50,21 +50,15 @@
 </head>
 <body>
    <header>
-  <!-- Checkbox placed at the top level -->
-  <input type="checkbox" id="menu-toggle" style="display: none;">
-  
-  <div style="display: flex; align-items: center; gap: 12px;">
-    <!-- Hamburger menu icon -->
-    <label for="menu-toggle" style="color: white; font-size: 24px; cursor: pointer;">&#9776;</label>
-    
-    <!-- Logo -->
-    <div class="logo">✨ VajranovA </div>
-  </div>
-    <nav class="nav-menu">
-      <a href="#">Home</a>
-      <a href="#movies-container">Movies & Shows</a>
-      <a href="#books-container">Books & PDFs</a>
-    </nav>
+           <div style="display: flex; align-items: center; gap: 8px;">
+      <!-- बैक बटन (होम पर छिपा रहेगा) -->
+      <button id="topBackBtn" onclick="switchTab('home')" style="display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 0 4px; line-height: 1;">
+        ←
+      </button>
+
+      <!-- Logo -->
+      <div class="logo">✨ VajranovA</div>
+    </div>    
 
     <div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
       <button id="searchTriggerBtn" class="search-trigger-btn" style="background: transparent; border: none; color: white;">
