@@ -843,3 +843,12 @@ body {
 .nav-tab-btn.active {
   color: #38bdf8 !important;
 }
+/* हीरो सेक्शन का लेआउट हमेशा Image 1 जैसा स्थिर रखने के लिए */
+.hero-section {
+  min-height: calc(100vh - 70px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  padding-bottom: 25px !important;
+  box-sizing: border-box !important;
+}
