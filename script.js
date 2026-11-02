@@ -314,7 +314,7 @@ window.switchTab = function(tabName, pushToHistory = true) {
   const tabs = ['home', 'movies', 'books', 'games', 'shopping'];
   const buttons = document.querySelectorAll('#bottomNav .nav-tab-btn');
 
-  // 1. एक्टिव टैब का नीला रंग सेट करना
+  // 1. एक्टिव टैब का रंग बदलना
   buttons.forEach((btn, index) => {
     if (tabs[index] === tabName) {
       btn.classList.add('active');
@@ -323,14 +323,14 @@ window.switchTab = function(tabName, pushToHistory = true) {
     }
   });
 
-  // 2. आपकी HTML के असली सेक्शन्स को पकड़ना
+  // 2. एलिमेंट्स को ढूँढना
   const heroSection = document.querySelector('.hero-section');
   const moviesSection = document.getElementById('movies-container')?.closest('.section');
   const booksSection = document.getElementById('books-container')?.closest('.section');
   const gamesSection = document.getElementById('games-section');
   const topBackBtn = document.getElementById('topBackBtn');
 
-  // शॉपिंग सेक्शन (अगर नहीं बना है तो अपने आप तैयार करना)
+  // शॉपिंग सेक्शन
   let shoppingSection = document.getElementById('shopping-section');
   if (!shoppingSection && tabName === 'shopping') {
     shoppingSection = document.createElement('div');
@@ -342,44 +342,36 @@ window.switchTab = function(tabName, pushToHistory = true) {
     if (footer) footer.parentNode.insertBefore(shoppingSection, footer);
   }
 
-  // 3. टैब के अनुसार सेक्शन दिखाना और बाकी को छुपाना
+  // 3. टैब के अनुसार सेक्शन दिखाना/छुपाना ('' रखने से CSS का मूल लेआउट लागू रहेगा)
   if (tabName === 'home') {
-    // होम पर सब कुछ दिखेगा
-    if (heroSection) heroSection.style.display = 'block';
-    if (moviesSection) moviesSection.style.display = 'block';
-    if (booksSection) booksSection.style.display = 'block';
-    if (gamesSection) gamesSection.style.display = 'block';
+    if (heroSection) heroSection.style.display = '';
+    if (moviesSection) moviesSection.style.display = '';
+    if (booksSection) booksSection.style.display = '';
+    if (gamesSection) gamesSection.style.display = '';
     if (shoppingSection) shoppingSection.style.display = 'none';
-    if (topBackBtn) topBackBtn.style.display = 'none'; // होम पर बैक बटन छिपा रहेगा
+    if (topBackBtn) topBackBtn.style.display = 'none';
   } else {
-    // किसी खास टैब पर सिर्फ वही सेक्शन दिखेगा
     if (heroSection) heroSection.style.display = 'none';
-    if (moviesSection) moviesSection.style.display = (tabName === 'movies') ? 'block' : 'none';
-    if (booksSection) booksSection.style.display = (tabName === 'books') ? 'block' : 'none';
-    if (gamesSection) gamesSection.style.display = (tabName === 'games') ? 'block' : 'none';
-    if (shoppingSection) shoppingSection.style.display = (tabName === 'shopping') ? 'block' : 'none';
-    if (topBackBtn) topBackBtn.style.display = 'inline-block'; // बाकी टैब्स पर बैक बटन (←) दिखेगा
+    if (moviesSection) moviesSection.style.display = (tabName === 'movies') ? '' : 'none';
+    if (booksSection) booksSection.style.display = (tabName === 'books') ? '' : 'none';
+    if (gamesSection) gamesSection.style.display = (tabName === 'games') ? '' : 'none';
+    if (shoppingSection) shoppingSection.style.display = (tabName === 'shopping') ? '' : 'none';
+    if (topBackBtn) topBackBtn.style.display = 'inline-block';
   }
 
-  // 4. हिस्ट्री में जोड़ना (ताकि मोबाइल बैक बटन काम करे)
+  // 4. ब्राउज़र हिस्ट्री जोड़ना
   if (pushToHistory) {
     history.pushState({ activeTab: tabName }, '', `#${tabName}`);
   }
 
-  // उस सेक्शन के टॉप पर ले जाना
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'instant' });
 };
 
-// फ़ोन का बैक बटन दबाने पर हैंडल करना
+// फ़ोन का बैक बटन हैंडल करना
 window.addEventListener('popstate', (e) => {
   if (e.state && e.state.activeTab) {
     switchTab(e.state.activeTab, false);
   } else {
     switchTab('home', false);
   }
-});
-
-// पेज लोड होते ही डिफ़ॉल्ट होम सेट करना
-document.addEventListener('DOMContentLoaded', () => {
-  history.replaceState({ activeTab: 'home' }, '', '#home');
 });
