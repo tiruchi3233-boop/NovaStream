@@ -156,6 +156,91 @@
         <iframe id="gameIframe" src="" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>
       </div>
     </div>
+<!-- सुंदर इन-पेज नेविगेशन बार (Footer के ऊपर) -->
+<style>
+  .site-nav-container {
+    margin: 35px auto 15px auto;
+    max-width: 600px;
+    width: 92%;
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    padding: 10px 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+  .site-nav-title {
+    color: #64748b;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+  }
+  #bottomNav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-tab-btn {
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    cursor: pointer;
+    gap: 4px;
+    flex: 1;
+    padding: 10px 4px;
+    transition: all 0.2s ease;
+  }
+  .nav-tab-btn .tab-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+  .nav-tab-btn .tab-label {
+    font-weight: 500;
+  }
+  .nav-tab-btn.active {
+    background: #1e3a8a;
+    color: #38bdf8;
+    border-color: #38bdf8;
+  }
+  .nav-tab-btn:active {
+    transform: scale(0.96);
+  }
+</style>
+
+<div class="site-nav-container">
+  <p class="site-nav-title">Quick Explore</p>
+  <nav id="bottomNav">
+    <button class="nav-tab-btn active" onclick="switchTab('home')">
+      <span class="tab-icon">🏠</span>
+      <span class="tab-label">Home</span>
+    </button>
+    <button class="nav-tab-btn" onclick="switchTab('movies')">
+      <span class="tab-icon">🎬</span>
+      <span class="tab-label">Movies</span>
+    </button>
+    <button class="nav-tab-btn" onclick="switchTab('books')">
+      <span class="tab-icon">📚</span>
+      <span class="tab-label">Books</span>
+    </button>
+    <button class="nav-tab-btn" onclick="switchTab('games')">
+      <span class="tab-icon">🎮</span>
+      <span class="tab-label">Games</span>
+    </button>
+    <button class="nav-tab-btn" onclick="switchTab('shopping')">
+      <span class="tab-icon">🛍️</span>
+      <span class="tab-label">Shopping</span>
+    </button>
+  </nav>
+</div>
 
   <!-- Footer Section -->
   <footer>
@@ -281,30 +366,5 @@ function displayNonRepeatingQuote(pool, textEl, authorEl) {
 fetchLiveQuote();
 
 </script>
-
-<!-- बॉटम नेविगेशन बार (Clean HTML) -->
-<nav id="bottomNav">
-  <button class="nav-tab-btn active" onclick="switchTab('home')">
-    <span class="tab-icon">🏠</span>
-    <span class="tab-label">Home</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('movies')">
-    <span class="tab-icon">🎬</span>
-    <span class="tab-label">Movies</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('books')">
-    <span class="tab-icon">📚</span>
-    <span class="tab-label">Books</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('games')">
-    <span class="tab-icon">🎮</span>
-    <span class="tab-label">Games</span>
-  </button>
-  <button class="nav-tab-btn" onclick="switchTab('shopping')">
-    <span class="tab-icon">🛍️</span>
-    <span class="tab-label">Shopping</span>
-  </button>
-</nav>
-
 </body>
 </html>
